@@ -28,26 +28,30 @@
 
 # MODULES
 import os
+import datetime
+import subprocess
 
-#VARIABLES
-linebreaker = '----------------------------------------------------------------------------'
+# VARIABLES
+dashes = '----------------------------------------------------------------------------'
 
 # SPLASH SCREEN
 print('STRATOSCALE - QUICK MONITOR')
+
 # 1. Create report file
+now = datetime.datetime.now()
+filename = now.strftime("%Y%m%d_%H%M")
+filename = 'Reports/report-' + filename + '.txt'
+reportfile = open(filename, "w+")
 
 # 2. Iterate through test scripts
-path = os.getcwd() + '/Tests'               # Get the working path of the tests folder
-scripts = os.listdir(path)                  # Get the scripts in the tests folder
+path = os.getcwd() + '/Tests'                               # Get the working path of the tests folder
+scripts = os.listdir(path)                                  # Get the scripts in the tests folder
 
+print(dashes)
 for i in scripts:
-    print(linebreaker)
-    print('TEST:            [' + i + ']')
-    exec(open('Tests/'+i).read())
-    print('STATUS:          [OK/NOK]')
-print(linebreaker)
+    scriptname = 'Tests/' + i
+    subprocess.call(['python', scriptname, filename])
+    print(dashes)
 
 # 3. Send report file to recipients
-
-
-
+reportfile.close()
