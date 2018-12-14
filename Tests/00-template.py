@@ -2,6 +2,6 @@
 import sys
 
 # Show current test
-print("TEST:            [" + sys.argv[0] + "]")
+print('TEST:            [' + sys.argv[0] + "]")
 # Report status of test [OK or FAIL]
-print("STATUS:          [" + "OK]")
+print('STATUS:          [' + 'OK]')
