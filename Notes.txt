@@ -1,1 +1,5 @@
 https://stackoverflow.com/questions/1027714/how-to-execute-a-file-within-the-python-interpreter
+https://stackoverflow.com/questions/1912434/how-do-i-parse-xml-in-python
+https://stackoverflow.com/questions/1027714/how-to-execute-a-file-within-the-python-interpreter
+https://wiki.python.org/moin/ForLoop
+https://stackoverflow.com/questions/9138112/looping-over-a-list-in-python
