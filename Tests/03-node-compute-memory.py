@@ -21,28 +21,23 @@
 #                                                                                                                      #
 ########################################################################################################################
 import sys
-import subprocess
+import yaml
 
 # PARAMETERS
 # 1 - Script name, 2 - Root path of calling script, 3 - Report filename
 
 # VARIABLES
+config = yaml.load(open(sys.argv[2] + '/config.yml', 'r'))
 result = 0                                                                  # Init OK/NOK marker
 error_info = "NO ERROR DATA PROVIDED"                                       # Init error data variable
 
 # ----------------------------------------------------------------------------------------------------------------------
 # TEST SCRIPT DATA GOES HERE
-hostname = "192.168.10.250"
-symphonyaccess = 'symp -k -d -cloud_admin -u admin -p R@ck@tt@ck-123'
-sshcommand = symphonyaccess + 'cluster summary'
+#clusterip = "192.168.10.250"
+#symphonyaccess = 'symp -k -d -cloud_admin -u admin -p R@ck@tt@ck-123'
+#sshcommand = symphonyaccess + 'cluster summary'
 
-ssh = subprocess.Popen(["ssh", "%s" % hostname, sshcommand],
-                       shell=False,
-                       stdout=subprocess.PIPE,
-                       stderr=subprocess.PIPE)
-response = ssh.stdout.readlines()
-print(response)
-
+print(config['region']['region1']['ipaddress'])
 # ----------------------------------------------------------------------------------------------------------------------
 
 # UPDATE REPORT FILE

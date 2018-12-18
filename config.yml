@@ -1,0 +1,8 @@
+region:
+    region1:
+        ipaddress: 192.168.10.250
+        cliusername: root
+        clirootpassword: rackattack
+        sympaccount: cloud_admin
+        sympusername: admin
+        symppassword: R@ck@tt@ck-123

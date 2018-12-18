@@ -18,14 +18,18 @@
 # CHANGELOG                                                                                                            #
 # v0.1 - 18 December 2018 (Richard Raymond)                                                                            #
 #   - Template                                                                                                         #
+# v0.2 - 18 December 2018 (Richard Raymond)                                                                            #
+#   - YAML Config file handling.                                                                                       #
 #                                                                                                                      #
 ########################################################################################################################
 import sys
+import yaml
 
 # PARAMETERS
 # 1 - Script name, 2 - Root path of calling script, 3 - Report filename
 
 # VARIABLES
+config = yaml.load(open(sys.argv[2] + '/config.yml', 'r'))                  # Pull in config information from YML file.
 result = 0                                                                  # Init OK/NOK marker
 error_info = "NO ERROR DATA PROVIDED"                                       # Init error data variable
 
