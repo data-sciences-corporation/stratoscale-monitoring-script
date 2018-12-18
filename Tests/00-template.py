@@ -16,14 +16,14 @@ error_info = "some sweet-ass error information"                             # In
 
 
 # UPDATE REPORT FILE
-reportfile = open(sys.argv[2] + '/Reports/' + sys.argv[3], "a")             # Open the current report file
+reportfile = open(sys.argv[2] + '/Reports/' + sys.argv[3] + '.txt', "a")    # Open the current report file
 reportfile.write('TEST:         [' + sys.argv[1] + ']\n')                   # Open test section in report file
 if result == "1":                                                           # Check if test was succesful
     reportfile.write('RESULT:       [OK]')                                  # Write success out to report file
 else:                                                                       # ELSE
     reportfile.write('RESULT:       [NOK]')                                 # Write fail out to report file
     errorfilename = sys.argv[3] + "_" + sys.argv[1]                         # Create a error_reportfile
-    errorfile = open(sys.argv[2] + '/Reports/' + errorfilename, "w+")       # Create error report file
+    errorfile = open(sys.argv[2] + '/Reports/' + errorfilename + '.txt', "w+")  # Create error report file
     errorfile.write(error_info)                                             # Write error data to error file
     errorfile.close()                                                       # Close error file
 reportfile.write('\n----------------------------------------------------------------------------\n')

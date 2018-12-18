@@ -48,8 +48,7 @@ reportfile.close()                                                      # Close 
 # RUN THROUGH ALL TESTS
 scripts = os.listdir(rootpath + '/Tests')                               # Get the list of scripts in the tests folder
 for i in scripts:                                                       # For each script DO
-    scriptname = 'Tests/' + i                                           # Create the test script path
-    subprocess.call(['python', scriptname, i, rootpath, reportfilename])  # Run the test script
+    subprocess.call(['python', 'Tests/' + i, i[:-3], rootpath, reportfilename])  # Run the test script
 
 # READ OUT TEST RESULTS, COMPRESS AND EMAIL RESULTS
 reportfile = open(rootpath + '/Reports/' + reportfilename + '.txt', "r")  # Open the report file
