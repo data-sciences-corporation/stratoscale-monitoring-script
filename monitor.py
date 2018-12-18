@@ -38,7 +38,7 @@ import yaml                                                             # For re
 
 # VARIABLES
 rootpath = os.getcwd()                                                  # Get the root path
-config = yaml.load(open(rootpath + '/config.yml', 'r'))                       # Pull in config information from YML file
+config = yaml.load(open(rootpath + '/config.yml', 'r'))                 # Pull in config information from YML file
 
 # SPLASH SCREEN
 print(sys.path)
