@@ -20,6 +20,7 @@
 #   - Template                                                                                                         #
 # v0.2 - 18 December 2018 (Richard Raymond)                                                                            #
 #   - YAML Config file handling.                                                                                       #
+#   - Added deeper error message customization (define error types in config.yaml)                                     #
 #                                                                                                                      #
 ########################################################################################################################
 import sys
@@ -31,7 +32,8 @@ import yaml
 # VARIABLES
 config = yaml.load(open(sys.argv[2] + '/config.yml', 'r'))                  # Pull in config information from YML file.
 result = 0                                                                  # Init OK/NOK marker
-error_info = "NO ERROR DATA PROVIDED"                                       # Init error data variable
+error_message = "NO ERROR"                                                  # Error message to provide overview of issue
+error_data = "NO ERROR DATA PROVIDED"                                       # Full error contents
 
 # ----------------------------------------------------------------------------------------------------------------------
 # TEST SCRIPT DATA GOES HERE
@@ -41,13 +43,13 @@ error_info = "NO ERROR DATA PROVIDED"                                       # In
 # UPDATE REPORT FILE
 reportfile = open(sys.argv[2] + '/Reports/' + sys.argv[3] + '.txt', "a")    # Open the current report file
 reportfile.write('TEST:         [' + sys.argv[1] + ']\n')                   # Open test section in report file
-if result == "1":                                                           # Check if test was succesful
-    reportfile.write('RESULT:       [OK]')                                  # Write success out to report file
-else:                                                                       # ELSE
-    reportfile.write('RESULT:       [NOK]')                                 # Write fail out to report file
+reportfile.write('RESULT:       [' + config['errortypes'][result] + ']')  # Add test status
+if result != 0:                                                             # Check if test wasn't successful
     errorfilename = sys.argv[3] + "_" + sys.argv[1]                         # Create a error_reportfile
     errorfile = open(sys.argv[2] + '/Reports/' + errorfilename + '.txt', "w+")  # Create error report file
-    errorfile.write(error_info)                                             # Write error data to error file
+    errorfile.write(error_data)                                             # Write error data to error file
     errorfile.close()                                                       # Close error file
+    reportfile.write(" : " + error_message + '\n')                          # Add error message to report
+    reportfile.write(" Please look at [" + errorfilename + ".txt] for further details.")
 reportfile.write('\n----------------------------------------------------------------------------\n')
 reportfile.close()                                                          # Close report file

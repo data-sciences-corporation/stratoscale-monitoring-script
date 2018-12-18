@@ -6,3 +6,8 @@ region:
         sympaccount: cloud_admin
         sympusername: admin
         symppassword: R@ck@tt@ck-123
+errortypes:
+    0: SUCCESS
+    1: WARN
+    2: ERROR
+    3: CRITICAL

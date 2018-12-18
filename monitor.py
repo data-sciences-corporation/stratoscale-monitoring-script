@@ -46,7 +46,7 @@ now = datetime.datetime.now()                                           # Get th
 reportfilename = now.strftime("%Y%m%d_%H%M")                            # Create the filename
 reportfilename = 'report-' + reportfilename                             # Append the prefix [report-] to the filename
 reportfile = open(rootpath + '/Reports/' + reportfilename + '.txt', "w+")  # Create a report file.
-reportfile.write('REPORT\n----------------------------------------------------------------------------\n')
+reportfile.write('STATUS REPORT\n----------------------------------------------------------------------------\n')
 reportfile.close()                                                      # Close the report file for later editing.
 
 # RUN THROUGH ALL TESTS
