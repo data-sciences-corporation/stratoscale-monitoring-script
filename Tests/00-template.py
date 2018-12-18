@@ -21,7 +21,6 @@
 #                                                                                                                      #
 ########################################################################################################################
 import sys
-import yaml                                                                 # For reading the config file
 
 # PARAMETERS
 # 1 - Script name, 2 - Root path of calling script, 3 - Report filename

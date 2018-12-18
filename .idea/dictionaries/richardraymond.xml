@@ -7,7 +7,10 @@
       <w>reportfilename</w>
       <w>rootpath</w>
       <w>scriptname</w>
+      <w>sshcommand</w>
       <w>stratoscale</w>
+      <w>symp</w>
+      <w>symphonyaccess</w>
     </words>
   </dictionary>
 </component>

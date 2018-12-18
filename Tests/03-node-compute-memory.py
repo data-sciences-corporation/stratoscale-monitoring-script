@@ -22,7 +22,6 @@
 ########################################################################################################################
 import sys
 import subprocess
-import yaml                                                                 # For reading the config file
 
 # PARAMETERS
 # 1 - Script name, 2 - Root path of calling script, 3 - Report filename
@@ -33,9 +32,9 @@ error_info = "NO ERROR DATA PROVIDED"                                       # In
 
 # ----------------------------------------------------------------------------------------------------------------------
 # TEST SCRIPT DATA GOES HERE
-hostname="192.168.10.250"
-symphonyaccess = "symp -k -d -cloud_admin -u admin -p R@ck@tt@ck-123"
-sshcommand = symphonyaccess + "cluster summary"
+hostname = "192.168.10.250"
+symphonyaccess = 'symp -k -d -cloud_admin -u admin -p R@ck@tt@ck-123'
+sshcommand = symphonyaccess + 'cluster summary'
 
 ssh = subprocess.Popen(["ssh", "%s" % hostname, sshcommand],
                        shell=False,
