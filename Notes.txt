@@ -5,3 +5,4 @@ https://stackoverflow.com/questions/7152340/using-a-python-subprocess-call-to-in
 https://wiki.python.org/moin/ForLoop
 https://stackoverflow.com/questions/9138112/looping-over-a-list-in-python
 https://www.guru99.com/reading-and-writing-files-in-python.html
+https://www.pythonforbeginners.com/files/reading-and-writing-files-in-python
