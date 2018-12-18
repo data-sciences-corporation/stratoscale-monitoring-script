@@ -23,6 +23,9 @@
 # CHANGELOG                                                                                                            #
 # v0.1 - 14 December 2018 (Richard Raymond)                                                                            #
 #   - Initial version                                                                                                  #
+# v0.2 - 18 December 2018 (Richard Raymond)                                                                            #
+#   - Added improve report file handling and additional parameters for script calls (script name, root path and report)#
+#   - Reads to the report file to output, rather than prining output direct console                                    #
 #                                                                                                                      #
 ########################################################################################################################
 
@@ -43,6 +46,7 @@ now = datetime.datetime.now()                                           # Get th
 reportfilename = now.strftime("%Y%m%d_%H%M")                            # Create the filename
 reportfilename = 'report-' + reportfilename                             # Append the prefix [report-] to the filename
 reportfile = open(rootpath + '/Reports/' + reportfilename + '.txt', "w+")  # Create a report file.
+reportfile.write('REPORT\n----------------------------------------------------------------------------\n')
 reportfile.close()                                                      # Close the report file for later editing.
 
 # RUN THROUGH ALL TESTS
@@ -54,3 +58,6 @@ for i in scripts:                                                       # For ea
 reportfile = open(rootpath + '/Reports/' + reportfilename + '.txt', "r")  # Open the report file
 print(reportfile.read())                                                # Read rge report file out to the user.
 reportfile.close()                                                      # Close the report file for later editing.
+
+# TODO - Zip relevant report files
+# TODO - Email zipped report data to addresses in recipients
