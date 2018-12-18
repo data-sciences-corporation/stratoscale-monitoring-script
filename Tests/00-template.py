@@ -34,12 +34,18 @@ config = yaml.load(open(sys.argv[2] + '/config.yml', 'r'))                  # Pu
 result = 0                                                                  # Init OK/NOK marker
 error_message = "NO ERROR"                                                  # Error message to provide overview of issue
 error_data = "NO ERROR DATA PROVIDED"                                       # Full error contents
-
 # ----------------------------------------------------------------------------------------------------------------------
 # TEST SCRIPT DATA GOES HERE
 
-# ----------------------------------------------------------------------------------------------------------------------
 
+
+
+
+
+
+
+
+# ----------------------------------------------------------------------------------------------------------------------
 # UPDATE REPORT FILE
 reportfile = open(sys.argv[2] + '/Reports/' + sys.argv[3] + '.txt', "a")    # Open the current report file
 reportfile.write('TEST:         ' + sys.argv[1] + '\n')                   # Open test section in report file
