@@ -41,8 +41,8 @@ print('STRATOSCALE - QUICK MONITOR')
 # 1. Create report file
 now = datetime.datetime.now()
 filename = now.strftime("%Y%m%d_%H%M")
-filename = 'Reports/report-' + filename + '.txt'
-reportfile = open(filename, "w+")
+filename = 'report-' + filename
+reportfile = open('Reports/' + filename, "w+")
 reportfile.close()
 
 # 2. Iterate through test scripts
@@ -55,6 +55,6 @@ for i in scripts:
     print(dashes)
 
 # 3. Send report file to recipients
-reportfile = open(filename, "r")
+reportfile = open('Reports/' + filename, "r")
 print(reportfile.read())
 reportfile.close()
