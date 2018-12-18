@@ -18,6 +18,7 @@ if result == "1":
 else:
     reportfile.write('RESULT:       [NOK]')
     filename = sys.argv[1] + "_" + sys.argv[0]
+    reportfile = open(filename, "w+")
     errorfile = open(filename, "w+")
     errorfile.write(error_info)
     errorfile.close()
