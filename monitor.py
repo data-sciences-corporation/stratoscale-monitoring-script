@@ -30,12 +30,14 @@
 ########################################################################################################################
 
 # MODULES
+import sys
 import os
 import datetime
 import subprocess
 # import yaml                                                             # For reading the config file
 
 # SPLASH SCREEN
+print(sys.path)
 print('STRATOSCALE - QUICK MONITOR')
 
 # CREATE SESSION REPORT FILE

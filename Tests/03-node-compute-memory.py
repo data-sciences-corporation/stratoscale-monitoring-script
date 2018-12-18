@@ -21,6 +21,7 @@
 #                                                                                                                      #
 ########################################################################################################################
 import sys
+import subprocess
 import yaml                                                                 # For reading the config file
 
 # PARAMETERS
@@ -32,13 +33,23 @@ error_info = "NO ERROR DATA PROVIDED"                                       # In
 
 # ----------------------------------------------------------------------------------------------------------------------
 # TEST SCRIPT DATA GOES HERE
+hostname="192.168.10.250"
+symphonyaccess = "symp -k -d -cloud_admin -u admin -p R@ck@tt@ck-123"
+sshcommand = symphonyaccess + "cluster summary"
+
+ssh = subprocess.Popen(["ssh", "%s" % hostname, sshcommand],
+                       shell=False,
+                       stdout=subprocess.PIPE,
+                       stderr=subprocess.PIPE)
+response = ssh.stdout.readlines()
+print(response)
 
 # ----------------------------------------------------------------------------------------------------------------------
 
 # UPDATE REPORT FILE
 reportfile = open(sys.argv[2] + '/Reports/' + sys.argv[3] + '.txt', "a")    # Open the current report file
 reportfile.write('TEST:         [' + sys.argv[1] + ']\n')                   # Open test section in report file
-if result == "1":                                                           # Check if test was succesful
+if result == "1":                                                           # Check if test was successful
     reportfile.write('RESULT:       [OK]')                                  # Write success out to report file
 else:                                                                       # ELSE
     reportfile.write('RESULT:       [NOK]')                                 # Write fail out to report file
