@@ -48,7 +48,6 @@ reportfile.close()
 # 2. Iterate through test scripts
 path = os.getcwd() + '/Tests'                               # Get the working path of the tests folder
 scripts = os.listdir(path)                                  # Get the scripts in the tests folder
-
 print(dashes)
 for i in scripts:
     scriptname = 'Tests/' + i
