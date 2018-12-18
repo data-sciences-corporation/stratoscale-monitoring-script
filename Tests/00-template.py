@@ -45,6 +45,7 @@ error_data = "NO ERROR DATA PROVIDED"                                       # Fu
 
 
 
+
 # ----------------------------------------------------------------------------------------------------------------------
 # UPDATE REPORT FILE
 reportfile = open(sys.argv[2] + '/Reports/' + sys.argv[3] + '.txt', "a")    # Open the current report file
