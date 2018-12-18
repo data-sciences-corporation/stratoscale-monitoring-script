@@ -1,8 +1,13 @@
 #!/usr/bin/python3
 import sys
+import yaml                                                             # For reading the config file
 
-result = 0
-error_info = "some sweet-ass error information"
+# PARAMETERS
+# 1 - Script name, 2 - Root path of calling script, 3 - Report filename
+
+# VARIABLES
+result = 0                                                                  # Init OK/NOK marker
+error_info = "some sweet-ass error information"                             # Init error data variable
 
 
 
@@ -11,15 +16,15 @@ error_info = "some sweet-ass error information"
 
 
 # UPDATE REPORT FILE
-reportfile = open(sys.argv[1], "a")
-reportfile.write('TEST:         [' + sys.argv[0] + ']\n')
-if result == "1":
-    reportfile.write('RESULT:       [OK]')
-else:
-    reportfile.write('RESULT:       [NOK]')
-    filename = sys.argv[1] + "_" + sys.argv[0]
-    reportfile = open(filename, "w+")
-    errorfile = open(filename, "w+")
-    errorfile.write(error_info)
-    errorfile.close()
-reportfile.close()
+reportfile = open(sys.argv[2] + '/Reports/' + sys.argv[3], "a")             # Open the current report file
+reportfile.write('TEST:         [' + sys.argv[1] + ']\n')                   # Open test section in report file
+if result == "1":                                                           # Check if test was succesful
+    reportfile.write('RESULT:       [OK]')                                  # Write success out to report file
+else:                                                                       # ELSE
+    reportfile.write('RESULT:       [NOK]')                                 # Write fail out to report file
+    errorfilename = sys.argv[3] + "_" + sys.argv[1]                         # Create a error_reportfile
+    errorfile = open(sys.argv[2] + '/Reports/' + errorfilename, "w+")       # Create error report file
+    errorfile.write(error_info)                                             # Write error data to error file
+    errorfile.close()                                                       # Close error file
+reportfile.write('\n----------------------------------------------------------------------------\n')
+reportfile.close()                                                          # Close report file

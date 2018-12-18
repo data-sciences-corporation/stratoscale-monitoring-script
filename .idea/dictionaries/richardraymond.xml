@@ -3,6 +3,8 @@
     <words>
       <w>errorfile</w>
       <w>reportfile</w>
+      <w>reportfilename</w>
+      <w>rootpath</w>
       <w>scriptname</w>
       <w>stratoscale</w>
     </words>

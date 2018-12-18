@@ -30,31 +30,28 @@
 import os
 import datetime
 import subprocess
-import yaml
+import yaml                                                             # For reading the config file
 
 # VARIABLES
-dashes = '----------------------------------------------------------------------------'
 
 # SPLASH SCREEN
 print('STRATOSCALE - QUICK MONITOR')
 
-# 1. Create report file
-now = datetime.datetime.now()
-filename = now.strftime("%Y%m%d_%H%M")
-filename = 'Reports/report-' + filename
-reportfile = open(filename, "w+")
-reportfile.close()
+# CREATE SESSION REPORT FILE
+rootpath = os.getcwd()                                                  # Get the root path
+now = datetime.datetime.now()                                           # Get the date & time (for the filename)
+reportfilename = now.strftime("%Y%m%d_%H%M")                            # Create the filename
+reportfilename = 'report-' + reportfilename                             # Append the prefix [report-] to the filename
+reportfile = open(rootpath + '/Reports/' + reportfilename + '.txt', "w+")  # Create a report file.
+reportfile.close()                                                      # Close the report file for later editing.
 
-# 2. Iterate through test scripts
-path = os.getcwd() + '/Tests'                               # Get the working path of the tests folder
-scripts = os.listdir(path)                                  # Get the scripts in the tests folder
-print(dashes)
-for i in scripts:
-    scriptname = 'Tests/' + i
-    subprocess.call(['python', scriptname, filename])
-    print(dashes)
+# RUN THROUGH ALL TESTS
+scripts = os.listdir(rootpath + '/Tests')                               # Get the list of scripts in the tests folder
+for i in scripts:                                                       # For each script DO
+    scriptname = 'Tests/' + i                                           # Create the test script path
+    subprocess.call(['python', scriptname, i, rootpath, reportfilename])  # Run the test script
 
-# 3. Send report file to recipients
-reportfile = open(filename, "r")
-print(reportfile.read())
-reportfile.close()
+# READ OUT TEST RESULTS, COMPRESS AND EMAIL RESULTS
+reportfile = open(rootpath + '/Reports/' + reportfilename + '.txt', "r")  # Open the report file
+print(reportfile.read())                                                # Read rge report file out to the user.
+reportfile.close()                                                      # Close the report file for later editing.
