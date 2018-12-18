@@ -33,9 +33,7 @@
 import os
 import datetime
 import subprocess
-import yaml                                                             # For reading the config file
-
-# VARIABLES
+# import yaml                                                             # For reading the config file
 
 # SPLASH SCREEN
 print('STRATOSCALE - QUICK MONITOR')

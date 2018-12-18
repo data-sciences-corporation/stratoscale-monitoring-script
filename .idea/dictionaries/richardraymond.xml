@@ -2,6 +2,7 @@
   <dictionary name="richardraymond">
     <words>
       <w>errorfile</w>
+      <w>errorfilename</w>
       <w>reportfile</w>
       <w>reportfilename</w>
       <w>rootpath</w>
