@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 import sys
 
-# Show current test
-print('TEST:            [' + sys.argv[0] + "]")
-# Report status of test [OK or FAIL]
-print('STATUS:          [' + 'OK]')
+# REPORT FILE
+reportfile = open(sys.argv[1], "a")
+reportfile.write('TEST:         [' + sys.argv[0] + ']\n')
+reportfile.write('RESULT:       [OK]')
+reportfile.close()
