@@ -1,8 +1,8 @@
 region:
     region1:
-        ipaddress: *********
-        cliusername: *********
-        clirootpassword: *********
+        ipaddress: **********
+        cliusername: **********
+        clirootpassword: **********
         sympaccount: **********
         sympusername: **********
         symppassword: **********
@@ -11,3 +11,4 @@ errortypes:
     1: WARN
     2: ERROR
     3: CRITICAL
+linebreak: -------------------------------------------------------------------------------------------------------

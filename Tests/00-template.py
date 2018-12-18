@@ -42,8 +42,8 @@ error_data = "NO ERROR DATA PROVIDED"                                       # Fu
 
 # UPDATE REPORT FILE
 reportfile = open(sys.argv[2] + '/Reports/' + sys.argv[3] + '.txt', "a")    # Open the current report file
-reportfile.write('TEST:         [' + sys.argv[1] + ']\n')                   # Open test section in report file
-reportfile.write('RESULT:       [' + config['errortypes'][result] + ']')  # Add test status
+reportfile.write('TEST:         ' + sys.argv[1] + '\n')                   # Open test section in report file
+reportfile.write('RESULT:       ' + config['errortypes'][result])    # Add test status
 if result != 0:                                                             # Check if test wasn't successful
     errorfilename = sys.argv[3] + "_" + sys.argv[1]                         # Create a error_reportfile
     errorfile = open(sys.argv[2] + '/Reports/' + errorfilename + '.txt', "w+")  # Create error report file
@@ -51,5 +51,5 @@ if result != 0:                                                             # Ch
     errorfile.close()                                                       # Close error file
     reportfile.write(" : " + error_message + '\n')                          # Add error message to report
     reportfile.write(" Please look at [" + errorfilename + ".txt] for further details.")
-reportfile.write('\n----------------------------------------------------------------------------\n')
+reportfile.write('\n' + config['linebreak'] + '\n')
 reportfile.close()                                                          # Close report file

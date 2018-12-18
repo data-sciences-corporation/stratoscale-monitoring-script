@@ -34,19 +34,22 @@ import sys
 import os
 import datetime
 import subprocess
-# import yaml                                                             # For reading the config file
+import yaml                                                             # For reading the config file
+
+# VARIABLES
+rootpath = os.getcwd()                                                  # Get the root path
+config = yaml.load(open(rootpath + '/config.yml', 'r'))                       # Pull in config information from YML file
 
 # SPLASH SCREEN
 print(sys.path)
 print('STRATOSCALE - QUICK MONITOR')
 
 # CREATE SESSION REPORT FILE
-rootpath = os.getcwd()                                                  # Get the root path
 now = datetime.datetime.now()                                           # Get the date & time (for the filename)
 reportfilename = now.strftime("%Y%m%d_%H%M")                            # Create the filename
 reportfilename = 'report-' + reportfilename                             # Append the prefix [report-] to the filename
 reportfile = open(rootpath + '/Reports/' + reportfilename + '.txt', "w+")  # Create a report file.
-reportfile.write('STATUS REPORT\n----------------------------------------------------------------------------\n')
+reportfile.write('STATUS REPORT\n' + config['linebreak'] + '\n')
 reportfile.close()                                                      # Close the report file for later editing.
 
 # RUN THROUGH ALL TESTS
