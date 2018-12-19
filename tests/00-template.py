@@ -11,7 +11,7 @@
 # -------------------------------------------------------------------------------------------------------------------- #
 #                                                                                                                      #
 # MODULE DETAILS:                                                                                                      #
-#   This module is for TODO                                                                                            #
+#   This module is for TODO: Fill in script explanation                                                                #
 #                                                                                                                      #
 # -------------------------------------------------------------------------------------------------------------------- #
 #                                                                                                                      #
@@ -22,9 +22,12 @@
 #   - YAML Config file handling.                                                                                       #
 #   - Added deeper error message customization (define error types in config.yaml)                                     #
 # v0.3 - 19 December 2018 (Richard Raymond)                                                                            #
+#   Source: 00-template.py [v0.3] - Requires: monitor.py [v0.4]                                                        #
 #   - Added better directory & error handling (directories are defined in the config.yml                               #
 #                                                                                                                      #
 ########################################################################################################################
+
+# MODULES
 import sys
 import yaml
 

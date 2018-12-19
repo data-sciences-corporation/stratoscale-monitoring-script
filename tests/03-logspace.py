@@ -11,18 +11,20 @@
 # -------------------------------------------------------------------------------------------------------------------- #
 #                                                                                                                      #
 # MODULE DETAILS:                                                                                                      #
-#   This module is for TODO                                                                                            #
+#   This module is for TODO: Fill in script explanation                                                                #
 #                                                                                                                      #
 # -------------------------------------------------------------------------------------------------------------------- #
 #                                                                                                                      #
 # CHANGELOG                                                                                                            #
 # v1.0 - 18 December 2018 (Richard Raymond)                                                                            #
 #   - Test Template v0.2                                                                                               #
-#   - First draft of log space monitoring script. Uses lazy create_bash-run_bash-delete_bash file method. TODO Optimise#
+#   - First draft of log space monitoring script. Uses lazy create_bash-run_bash-delete_bash file method.              #
 # v1.1 - 19 December 2018 (Richard Raymond)                                                                            #
-#   - Test Template v0.3                                                                                               #
+#   Source: 00-template.py [v0.3] - Requires: monitor.py [v0.4]                                                        #
 #                                                                                                                      #
 ########################################################################################################################
+
+# MODULES
 import os
 import sys
 import yaml
@@ -47,13 +49,13 @@ error_data = "*UPDATE ME*"                                                  # Fu
 # TEST SCRIPT DATA GOES HERE
 
 # Make a bash script
-bashscript = open("deleteme.sh", "w+")
+bashscript = open(scriptdirectory + "/deleteme.sh", "w+")
 bashscript.write("#!/bin/bash\nconsul exec df -h | grep log | awk {\'print $1 $6\'}")
 bashscript.close()
 
 # Allow execute access
-os.chmod("deleteme.sh", 755)
-process = subprocess.Popen('./deleteme.sh', stdout=subprocess.PIPE)
+os.chmod(scriptdirectory + "/deleteme.sh", 755)
+process = subprocess.Popen('.' + scriptdirectory + '/deleteme.sh', stdout=subprocess.PIPE)
 output, error = process.communicate()
 # noinspection PyRedeclaration
 error_data = output
@@ -77,7 +79,7 @@ for i in range(len(nodelist)-1):
                 result = worstcase
         worstcase = 0
 # Delete bash script file
-os.remove("deleteme.sh")
+#os.remove(scriptdirectory + "/deleteme.sh")
 
 # ----------------------------------------------------------------------------------------------------------------------
 # UPDATE REPORT FILE

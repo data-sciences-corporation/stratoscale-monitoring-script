@@ -41,7 +41,7 @@ import subprocess                                                       # For ru
 import yaml                                                             # For reading the config file
 import zipfile                                                          # For compressing the report info for email
 
-# VARIABLES
+# CONFIG VARIABLES
 rootpath = os.getcwd()                                                  # Get the root path
 config = yaml.load(open('config.yml', 'r'))                             # Pull in config information from YML file
 testdirectory = rootpath + "/" + config['framework']['directory']['test'] + "/"  # Generate directory string for test
@@ -77,7 +77,7 @@ for report in os.listdir(reportdirectory):                                 # Ite
     if ".zip" not in report:                                               # Ignore zip files
         if reportfilename in report:                                       # Check if current report is current
             archive.write(os.path.join(config['framework']['directory']['report'], report))  # Add report to archive
-            os.remove(reportdirectory + report)
+            os.remove(reportdirectory + report)                            # Remove processed report file
 archive.close()                                                            # Close the report archive when done
 
 # TODO - v1.0 - Email zipped report data to addresses in recipients

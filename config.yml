@@ -1,8 +1,8 @@
 framework:
     directory:
-        report: 'Reports'
-        script: 'subscripts'
-        test: 'Tests'
+        report: 'reports'
+        script: 'scripts'
+        test: 'tests'
         working: 'working'
 region:
     region1:
