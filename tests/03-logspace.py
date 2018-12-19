@@ -42,23 +42,25 @@ workingdirectory = rootpath + "/" + config['framework']['directory']['working'] 
 scriptdirectory = rootpath + "/" + config['framework']['directory']['script'] + "/"    # Generate dir for sub scripts
 
 # SCRIPT VARIABLES
-result = 4                                                                  # Initialize OK/NOK marker
-error_message = "*UPDATE ME*"                                               # Error message to provide overview
-error_data = "*UPDATE ME*"                                                  # Full error contents
+result = 0                                                                  # Initialize OK/NOK marker
+error_message = "Log space utilisation is above expected threshold."        # Error message to provide overview
+error_data = "Node log space utilisation.\n"                                # Full error contents
+
+scriptfile = scriptdirectory + sys.argv[1] + ".sh"                          # Create a script file
 # ----------------------------------------------------------------------------------------------------------------------
 # TEST SCRIPT DATA GOES HERE
 
 # Make a bash script
-bashscript = open(scriptdirectory + "/deleteme.sh", "w+")
+bashscript = open(scriptfile, "w+")
 bashscript.write("#!/bin/bash\nconsul exec df -h | grep log | awk {\'print $1 $6\'}")
 bashscript.close()
 
 # Allow execute access
-os.chmod(scriptdirectory + "/deleteme.sh", 755)
-process = subprocess.Popen('.' + scriptdirectory + '/deleteme.sh', stdout=subprocess.PIPE)
+os.chmod(scriptfile, 0o755)                                                 # Force octal data type
+process = subprocess.Popen(scriptfile, stdout=subprocess.PIPE)
 output, error = process.communicate()
-# noinspection PyRedeclaration
-error_data = output
+error_data = error_data + output
+
 # Clean dirty bash response
 nodelist = output.split('%')
 worstcase = 0
@@ -79,8 +81,7 @@ for i in range(len(nodelist)-1):
                 result = worstcase
         worstcase = 0
 # Delete bash script file
-#os.remove(scriptdirectory + "/deleteme.sh")
-
+os.remove(scriptfile)
 # ----------------------------------------------------------------------------------------------------------------------
 # UPDATE REPORT FILE
 reportfile = open(reportdirectory + sys.argv[3] + '.txt', "a")              # Open the current report file
@@ -92,6 +93,6 @@ if result != 0:                                                             # Ch
     errorfile.write(error_data)                                             # Write error data to error file
     errorfile.close()                                                       # Close error file
     reportfile.write(" : " + error_message + '\n')                          # Add error message to report
-    reportfile.write(" Please look at [" + errorfilename + ".txt] for further details.")
+    reportfile.write("\tPlease look at [" + errorfilename + ".txt] for further details.")
 reportfile.write('\n' + config['formatting']['linebreak'] + '\n')           # Add line break to report file, after test
 reportfile.close()                                                          # Close report file

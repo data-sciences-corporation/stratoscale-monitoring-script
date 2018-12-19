@@ -24,6 +24,9 @@
 # v0.3 - 19 December 2018 (Richard Raymond)                                                                            #
 #   Source: 00-template.py [v0.3] - Requires: monitor.py [v0.4]                                                        #
 #   - Added better directory & error handling (directories are defined in the config.yml                               #
+# TODO vX.X - Date (Author)                                                                                            #
+# TODO Source: 00-template.py [X.X] - Requires: monitor.py [vX.X]                                                      #
+# TODO Changes between last build to this build                                                                        #
 #                                                                                                                      #
 ########################################################################################################################
 
@@ -46,8 +49,10 @@ scriptdirectory = rootpath + "/" + config['framework']['directory']['script'] + 
 result = 4                                                                  # Initialize OK/NOK marker
 error_message = "*UPDATE ME*"                                               # Error message to provide overview
 error_data = "*UPDATE ME*"                                                  # Full error contents
+
+# scriptfile = scriptdirectory + sys.argv[1] + ".sh"                        # Create a script file
 # ----------------------------------------------------------------------------------------------------------------------
-# TEST SCRIPT DATA GOES HERE
+# TODO - CUSTOM SCRIPT GOES HERE
 
 
 
@@ -69,6 +74,6 @@ if result != 0:                                                             # Ch
     errorfile.write(error_data)                                             # Write error data to error file
     errorfile.close()                                                       # Close error file
     reportfile.write(" : " + error_message + '\n')                          # Add error message to report
-    reportfile.write(" Please look at [" + errorfilename + ".txt] for further details.")
+    reportfile.write("\tPlease look at [" + errorfilename + ".txt] for further details.")
 reportfile.write('\n' + config['formatting']['linebreak'] + '\n')           # Add line break to report file, after test
 reportfile.close()                                                          # Close report file

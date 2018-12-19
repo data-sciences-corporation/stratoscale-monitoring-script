@@ -9,6 +9,7 @@
       <w>reportfilename</w>
       <w>rootpath</w>
       <w>scriptdirectory</w>
+      <w>scriptfile</w>
       <w>scriptname</w>
       <w>sshcommand</w>
       <w>stratoscale</w>
