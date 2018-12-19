@@ -25,9 +25,11 @@
 #   - Initial version                                                                                                  #
 # v0.2 - 18 December 2018 (Richard Raymond)                                                                            #
 #   - Added improve report file handling and additional parameters for script calls (script name, root path and report)#
-#   - Reads to the report file to output, rather than prining output direct console                                    #
+#   - Reads to the report file to output, rather than printing output direct console                                   #
 # v0.3 - 19 December 2018 (Richard Raymond)                                                                            #
 #   - Added better directory & error handling (directories are defined in the config.yml                               #
+# v0.4 - 19 December 2018 (Richard Raymond)                                                                            #
+#   - Report archive/compression added                                                                                 #
 #                                                                                                                      #
 ########################################################################################################################
 
@@ -37,12 +39,13 @@ import os                                                               # For os
 import datetime                                                         # For dates and time []
 import subprocess                                                       # For running os commands
 import yaml                                                             # For reading the config file
+import zipfile                                                          # For compressing the report info for email
 
 # VARIABLES
 rootpath = os.getcwd()                                                  # Get the root path
 config = yaml.load(open('config.yml', 'r'))                             # Pull in config information from YML file
-testdirectory = rootpath + config['framework']['directory']['test']     # Generate directory string for test
-reportdirectory = rootpath + config['framework']['directory']['report']  # Generate directory string for reports
+testdirectory = rootpath + "/" + config['framework']['directory']['test'] + "/"  # Generate directory string for test
+reportdirectory = rootpath + "/" + config['framework']['directory']['report'] + "/"  # Generate dir string for reports
 
 # SPLASH SCREEN
 print(sys.path)
@@ -58,14 +61,23 @@ reportfile.write('\nSTATUS REPORT\n' + config['formatting']['linebreak'] + '\n')
 reportfile.close()                                                      # Close the report file for later editing.
 
 # RUN THROUGH ALL TESTS
-scripts = os.listdir(testdirectory)                                     # Get the list of scripts in tests folder
-for i in scripts:                                                       # For each script DO
-    subprocess.call(['python', testdirectory + i, i[:-3], rootpath, reportfilename])  # Run the test script
+tests = os.listdir(testdirectory)                                       # Get the list of scripts in tests folder
+for test in tests:                                                      # For each script DO
+    subprocess.call(['python', testdirectory + test, test[:-3], rootpath, reportfilename])  # Run the test script
 
 # READ OUT TEST RESULTS, COMPRESS AND EMAIL RESULTS
 reportfile = open(reportdirectory + reportfilename + '.txt', "r")       # Open the report file
 print(reportfile.read())                                                # Read rge report file out to the user.
 reportfile.close()                                                      # Close the report file for later editing.
 
-# TODO - v0.4 - Zip relevant report files
-# TODO - v0.4 - Email zipped report data to addresses in recipients
+# ZIP REPORT FILES
+archive = zipfile.ZipFile(reportdirectory + reportfilename + ".zip", "w")  # Open a zip file
+archive.write(config['framework']['directory']['report'])
+for report in os.listdir(reportdirectory):                                 # Iterate through all reports
+    if ".zip" not in report:                                               # Ignore zip files
+        if reportfilename in report:                                       # Check if current report is current
+            archive.write(os.path.join(config['framework']['directory']['report'], report))  # Add report to archive
+            os.remove(reportdirectory + report)
+archive.close()                                                            # Close the report archive when done
+
+# TODO - v1.0 - Email zipped report data to addresses in recipients

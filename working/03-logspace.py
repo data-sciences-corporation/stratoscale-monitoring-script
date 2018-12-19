@@ -33,11 +33,11 @@ import subprocess
 
 # CONFIG VARIABLES
 rootpath = sys.argv[2]
-config = yaml.load(open( rootpath + '/config.yml', 'r'))                    # Pull in config information from YML file.
-testdirectory = rootpath + config['framework']['directory']['test']         # Generate directory string for test
-reportdirectory = rootpath + config['framework']['directory']['report']     # Generate directory string for reports
-workingdirectory = rootpath + config['framework']['directory']['working']   # Generate directory string for working dir
-scriptdirectory = rootpath + config['framework']['directory']['script']     # Generate directory string for sub scripts
+config = yaml.load(open(rootpath + '/config.yml', 'r'))                    # Pull in config information from YML file.
+testdirectory = rootpath + "/" + config['framework']['directory']['test'] + "/"        # Generate dir for test
+reportdirectory = rootpath + "/" + config['framework']['directory']['report'] + "/"    # Generate dir for reports
+workingdirectory = rootpath + "/" + config['framework']['directory']['working'] + "/"  # Generate dir for working dir
+scriptdirectory = rootpath + "/" + config['framework']['directory']['script'] + "/"    # Generate dir for sub scripts
 
 # SCRIPT VARIABLES
 result = 4                                                                  # Initialize OK/NOK marker
@@ -55,6 +55,7 @@ bashscript.close()
 os.chmod("deleteme.sh", 755)
 process = subprocess.Popen('./deleteme.sh', stdout=subprocess.PIPE)
 output, error = process.communicate()
+# noinspection PyRedeclaration
 error_data = output
 # Clean dirty bash response
 nodelist = output.split('%')

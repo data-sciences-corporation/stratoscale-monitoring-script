@@ -1,9 +1,9 @@
 framework:
     directory:
-        report: '/Reports/'
-        script: '/subscripts/'
-        test: '/Tests/'
-        working: '/working/'
+        report: 'Reports'
+        script: 'subscripts'
+        test: 'Tests'
+        working: 'working'
 region:
     region1:
         name: dsclab
