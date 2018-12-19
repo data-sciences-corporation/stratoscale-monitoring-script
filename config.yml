@@ -1,14 +1,23 @@
+framework:
+    directory:
+        report: '/Reports/'
+        script: '/subscripts/'
+        test: '/Tests/'
+        working: '/working/'
 region:
     region1:
-        ipaddress: 192.168.10.250
-        cliusername: root
-        clirootpassword: rackattack
-        sympaccount: cloud_admin
-        sympusername: admin
-        symppassword: R@ck@tt@ck-123
+        name: dsclab
+        ipaddress: IPADDRESS
+        cliusername: CLIUSER
+        clirootpassword: CLIPASSWORD
+        sympaccount: SYMPHONYCLOUDACCOUNT
+        sympusername: SYMPHONYUSERNAME
+        symppassword: SYMPHONYPASSWORD
 errortypes:
     0: SUCCESS
     1: WARN
     2: ERROR
     3: CRITICAL
-linebreak: '-------------------------------------------------------------------------------------------------------'
+    4: UNDEFINED
+formatting:
+    linebreak: '-------------------------------------------------------------------------------------------------------'

@@ -3,14 +3,19 @@
     <words>
       <w>errorfile</w>
       <w>errorfilename</w>
+      <w>reportdir</w>
+      <w>reportdirectory</w>
       <w>reportfile</w>
       <w>reportfilename</w>
       <w>rootpath</w>
+      <w>scriptdirectory</w>
       <w>scriptname</w>
       <w>sshcommand</w>
       <w>stratoscale</w>
       <w>symp</w>
       <w>symphonyaccess</w>
+      <w>testdirectory</w>
+      <w>workingdirectory</w>
     </words>
   </dictionary>
 </component>
