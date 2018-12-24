@@ -44,7 +44,7 @@ scriptdirectory = rootpath + "/" + config['framework']['directory']['script'] + 
 # SCRIPT VARIABLES
 result = 0                                                                  # Initialize OK/NOK marker
 error_message = "Log space utilisation is above expected threshold."        # Error message to provide overview
-test_data = "Node log space utilisation.\n"                                # Full error contents
+test_data = "Node log space utilisation.\n"                                 # Full error contents
 
 scriptfile = scriptdirectory + sys.argv[1] + ".sh"                          # Create a script file
 # ----------------------------------------------------------------------------------------------------------------------
@@ -90,7 +90,7 @@ reportfile.write('RESULT:       ' + config['errortypes'][result])           # Ad
 if result != 0:                                                             # Check if test wasn't successful
     errorfilename = sys.argv[3] + "_" + sys.argv[1]                         # Create a error_reportfile
     errorfile = open(reportdirectory + errorfilename + '.txt', "w+")        # Create error report file
-    errorfile.write(test_data)                                             # Write error data to error file
+    errorfile.write(test_data)                                              # Write error data to error file
     errorfile.close()                                                       # Close error file
     reportfile.write(" : " + error_message + '\n')                          # Add error message to report
     reportfile.write("\tPlease look at [" + errorfilename + ".txt] for further details.")
