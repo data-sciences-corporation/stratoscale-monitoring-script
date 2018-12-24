@@ -1,9 +1,3 @@
-framework:
-    directory:
-        report: 'reports'
-        script: 'scripts'
-        test: 'tests'
-        working: 'working'
 region:
     region1:
         name: dsclab
@@ -13,11 +7,22 @@ region:
         sympaccount: SYMPHONYCLOUDACCOUNT
         sympusername: SYMPHONYUSERNAME
         symppassword: SYMPHONYPASSWORD
-errortypes:
-    0: SUCCESS
-    1: WARN
-    2: ERROR
-    3: CRITICAL
-    4: UNDEFINED
-formatting:
-    linebreak: '-------------------------------------------------------------------------------------------------------'
+    email:
+        server: smtp.mweb.co.za
+        port: 587
+        user: username
+        password: mypassword
+framework:
+    directory:
+        report: 'reports'
+        script: 'scripts'
+        test: 'tests'
+        working: 'working'
+    errortypes:
+        0: SUCCESS
+        1: WARN
+        2: ERROR
+        3: CRITICAL
+        4: UNDEFINED
+    formatting:
+        linebreak: '---------------------------------------------------------------------------------------------------'

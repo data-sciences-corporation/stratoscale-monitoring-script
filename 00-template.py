@@ -67,7 +67,7 @@ test_data = "*UPDATE ME*"                                                   # Fu
 # UPDATE REPORT FILE
 reportfile = open(reportdirectory + sys.argv[3] + '.txt', "a")              # Open the current report file
 reportfile.write('TEST:         ' + sys.argv[1] + '\n')                     # Open test section in report file
-reportfile.write('RESULT:       ' + config['errortypes'][result])           # Add test status to report
+reportfile.write('RESULT:       ' + config['framework']['errortypes'][result])  # Add test status to report
 if result != 0:                                                             # Check if test wasn't successful
     errorfilename = sys.argv[3] + "_" + sys.argv[1]                         # Create a error_reportfile
     errorfile = open(reportdirectory + errorfilename + '.txt', "w+")        # Create error report file
@@ -75,5 +75,5 @@ if result != 0:                                                             # Ch
     errorfile.close()                                                       # Close error file
     reportfile.write(" : " + error_message + '\n')                          # Add error message to report
     reportfile.write("\tPlease look at [" + errorfilename + ".txt] for further details.")
-reportfile.write('\n' + config['formatting']['linebreak'] + '\n')           # Add line break to report file, after test
+reportfile.write('\n' + config['framework']['formatting']['linebreak'] + '\n')  # Add line break to report file per test
 reportfile.close()                                                          # Close report file
