@@ -11,7 +11,7 @@
 # -------------------------------------------------------------------------------------------------------------------- #
 #                                                                                                                      #
 # MODULE DETAILS:                                                                                                      #
-#   This module is for TODO: Fill in script explanation                                                                #
+#   This module is for monitor the /logs directory, to check that we are not filling up the logs unnecessarily.        #
 #                                                                                                                      #
 # -------------------------------------------------------------------------------------------------------------------- #
 #                                                                                                                      #
