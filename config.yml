@@ -8,10 +8,10 @@ region:
         sympusername: SYMPHONYUSERNAME
         symppassword: SYMPHONYPASSWORD
     email:
-        server: 'smtp.office365.com'
+        server: 'mailserver'
         port: '587'
         user: username
-        password: "M!ch3ll3_90"
+        password: "password"
 framework:
     directory:
         report: 'reports'
