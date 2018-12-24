@@ -17,7 +17,7 @@
 #                                                                                                                      #
 # CHANGELOG                                                                                                            #
 # v0.1 - 24 December 2018 (Josef Bitschnau)                                                                            #
-#   Source: 00-template.py [0.3] - Requires: monitor.py [v0.4]                                                         #
+#   Source: 00-template.py [v0.3] - Requires: monitor.py [v0.4]                                                        #
 #   - Initial version                                                                                                  #
 #                                                                                                                      #
 ########################################################################################################################
@@ -46,6 +46,7 @@ test_data = ""                                                   # Full error co
 
 # scriptfile = scriptdirectory + sys.argv[1] + ".sh"                        # Create a script file
 # ----------------------------------------------------------------------------------------------------------------------
+# TEST SCRIPT DATA GOES HERE
 
 # symproc1 = subprocess.Popen(['symp','-k','-d','cloud_admin','-u','admin','-p','R@ck@tt@ck-123','node','list','-c','name','--quiet'], stdout=subprocess.PIPE)
 # symproc2 = subprocess.Popen(['awk','''{print $2}'''], stdin=symproc1.stdout, stdout=subprocess.PIPE)

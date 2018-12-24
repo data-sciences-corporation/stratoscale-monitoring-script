@@ -80,6 +80,7 @@ for i in range(len(nodelist)-1):
         if int(result) < int(worstcase):
                 result = worstcase
         worstcase = 0
+
 # Delete bash script file
 os.remove(scriptfile)
 # ----------------------------------------------------------------------------------------------------------------------

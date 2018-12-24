@@ -17,7 +17,7 @@
 #                                                                                                                      #
 # CHANGELOG                                                                                                            #
 # v0.1 - 24 December 2018 (Richard Raymond)                                                                            #
-#   Source: 00-template.py [0.3] - Requires: monitor.py [vX.X]                                                         #
+#   Source: 00-template.py [v0.3] - Requires: monitor.py [v0.4]                                                         #
 #   - Initial version of the script                                                                                    #
 #                                                                                                                      #
 ########################################################################################################################

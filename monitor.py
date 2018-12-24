@@ -80,4 +80,5 @@ for report in os.listdir(reportdirectory):                                 # Ite
             os.remove(reportdirectory + report)                            # Remove processed report file
 archive.close()                                                            # Close the report archive when done
 
+# EMAIL REPORT TO RECIPIENTS
 # TODO - v1.0 - Email zipped report data to addresses in recipients
