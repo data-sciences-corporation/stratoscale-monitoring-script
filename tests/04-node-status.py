@@ -11,58 +11,72 @@
 # -------------------------------------------------------------------------------------------------------------------- #
 #                                                                                                                      #
 # MODULE DETAILS:                                                                                                      #
-#   This module is for TODO: Fill in script explanation                                                                #
+#   This module is for high level checking the node status.                                                            #
 #                                                                                                                      #
 # -------------------------------------------------------------------------------------------------------------------- #
 #                                                                                                                      #
 # CHANGELOG                                                                                                            #
-# v0.1 - 18 December 2018 (Richard Raymond)                                                                            #
-#   - Template                                                                                                         #
-# v0.2 - 18 December 2018 (Richard Raymond)                                                                            #
-#   - YAML Config file handling.                                                                                       #
-#   - Added deeper error message customization (define error types in config.yaml)                                     #
-# v0.3 - 19 December 2018 (Richard Raymond)                                                                            #
-#   Source: 00-template.py [v0.3] - Requires: monitor.py [v0.4]                                                        #
-#   - Added better directory & error handling (directories are defined in the config.yml                               #
-# TODO vX.X - Date (Author)                                                                                            #
-# TODO Source: 00-template.py [X.X] - Requires: monitor.py [vX.X]                                                      #
-# TODO Changes between last build to this build                                                                        #
+# v0.1 - 24 December 2018 (Richard Raymond)                                                                            #
+#   Source: 00-template.py [0.3] - Requires: monitor.py [vX.X]                                                         #
+#   - Initial version of the script                                                                                    #
 #                                                                                                                      #
 ########################################################################################################################
 
 # MODULES
+import os
 import sys
 import yaml
+import subprocess
 
 # PARAMETERS
 # 1 - Script name, 2 - Root path of calling script, 3 - Report filename
 
 # CONFIG VARIABLES
 rootpath = sys.argv[2]
-config = yaml.load(open(rootpath + '/config.yml', 'r'))                    # Pull in config information from YML file.
+config = yaml.load(open(rootpath + '/config.yml', 'r'))                     # Pull in config information from YML file.
 testdirectory = rootpath + "/" + config['framework']['directory']['test'] + "/"        # Generate dir for test
 reportdirectory = rootpath + "/" + config['framework']['directory']['report'] + "/"    # Generate dir for reports
 workingdirectory = rootpath + "/" + config['framework']['directory']['working'] + "/"  # Generate dir for working dir
 scriptdirectory = rootpath + "/" + config['framework']['directory']['script'] + "/"    # Generate dir for sub scripts
 
 # SCRIPT VARIABLES
-result = 4                                                                  # Initialize OK/NOK marker
-error_message = "*UPDATE ME*"                                               # Error message to provide overview
-test_data = "*UPDATE ME*"                                                   # Full error contents
+result = 0                                                                  # Initialize OK/NOK marker
+error_message = "Node/s are unhealthy.\n"                                   # Error message to provide overview
+test_data = "Node status\n"                                                 # Full error contents
 
-# scriptfile = scriptdirectory + sys.argv[1] + ".sh"                        # Create a script file
+tenant = config['region']['region1']['sympaccount']                         # Get symphony admin account
+user = config['region']['region1']['sympusername']                          # Get symphony admin user
+password = config['region']['region1']['symppassword']                      # Get symphony admin user password
+
+scriptfile = scriptdirectory + sys.argv[1] + ".sh"                          # Create a script file
 # ----------------------------------------------------------------------------------------------------------------------
-# TODO - CUSTOM SCRIPT GOES HERE
+# TEST SCRIPT DATA GOES HERE
 
+# Make a bash script
+bashscript = open(scriptfile, "w+")
+accessdetails = '-d ' + tenant + ' -u ' + user + ' -p ' + password
+bashscript.write("#!/bin/bash\nsymp -k " + accessdetails + ' ')
+bashscript.write("node list -c name -c state -c state_fail_reasons -f yaml --quiet")
+bashscript.close()
 
+# Allow execute access
+os.chmod(scriptfile, 0o755)                                                 # Force octal data type
+process = subprocess.Popen(scriptfile, stdout=subprocess.PIPE)
+output, error = process.communicate()
 
+# Get data from script and import to yaml
+response_yaml = yaml.load(output)
+test_data = test_data + output
 
+# Iterate through node list and check status
+for i in range(len(response_yaml)):
+    if response_yaml[i]['state'] != "active":
+        result = 3
+        error_message = error_message + '\t' + str(response_yaml[i]['name']) + 'is in state [' + str(response_yaml[i]['state'])
+        error_message = error_message + '] - ' + str(response_yaml[i]['state_fail_reasons']) + '\n'
 
-
-
-
-
-
+# Delete bash script file
+os.remove(scriptfile)
 # ----------------------------------------------------------------------------------------------------------------------
 # UPDATE REPORT FILE
 reportfile = open(reportdirectory + sys.argv[3] + '.txt', "a")              # Open the current report file

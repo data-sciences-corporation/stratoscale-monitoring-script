@@ -39,7 +39,7 @@ import yaml
 
 # CONFIG VARIABLES
 rootpath = sys.argv[2]
-config = yaml.load(open(rootpath + '/config.yml', 'r'))                    # Pull in config information from YML file.
+config = yaml.load(open(rootpath + '/config.yml', 'r'))                     # Pull in config information from YML file.
 testdirectory = rootpath + "/" + config['framework']['directory']['test'] + "/"        # Generate dir for test
 reportdirectory = rootpath + "/" + config['framework']['directory']['report'] + "/"    # Generate dir for reports
 workingdirectory = rootpath + "/" + config['framework']['directory']['working'] + "/"  # Generate dir for working dir

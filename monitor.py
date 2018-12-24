@@ -56,8 +56,8 @@ now = datetime.datetime.now()                                           # Get th
 reportfilename = now.strftime("%Y%m%d_%H%M")                            # Create the filename
 reportfilename = 'report-' + reportfilename                             # Append the prefix [report-] to the filename
 reportfile = open(reportdirectory + reportfilename + '.txt', "w+")      # Create a report file.
-reportfile.write(config['region']['region1']['name'])
-reportfile.write('\nSTATUS REPORT\n' + config['formatting']['linebreak'] + '\n')
+reportfile.write('\nSTATUS REPORT [' + config['region']['region1']['name'] + ']\n')
+reportfile.write(config['formatting']['linebreak'] + '\n')
 reportfile.close()                                                      # Close the report file for later editing.
 
 # RUN THROUGH ALL TESTS
