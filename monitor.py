@@ -45,8 +45,8 @@ import ssl                                                              # For em
 import string								# For string things
 
 # CONFIG VARIABLES
-rootpath = os.path.dirname(os.path.abspath(__file__))                                                  # Get the root path
-config = yaml.load(open(rootpath + '/config.yml', 'r'))                             # Pull in config information from YML file
+rootpath = os.path.dirname(os.path.abspath(__file__))                   # Get the root path
+config = yaml.load(open(rootpath + '/config.yml', 'r'))                 # Pull in config information from YML file
 testdirectory = rootpath + "/" + config['framework']['directory']['test'] + "/"  # Generate directory string for test
 reportdirectory = rootpath + "/" + config['framework']['directory']['report'] + "/"  # Generate dir string for reports
 
@@ -85,9 +85,9 @@ for report in os.listdir(reportdirectory):                              # Iterat
 archive.close()                                                         # Close the report archive when done
 
 # EMAIL TIME
-SUBJECT = "Stratoscale Region: absaprd01 Monitoring Report"
-TO = "john.vanderveen@barclays.com; richard.raymond@datasciences.co.za"
-FROM = "absaprd01@stratoscale.com"
+SUBJECT = "Stratoscale Region: Region Monitoring Report"
+TO = "emailaddress@domain.com"
+FROM = "strato-region@domain.com"
 text = fullreport
 BODY = string.join((
         "From: %s" % FROM,
@@ -96,6 +96,6 @@ BODY = string.join((
         "",
         text
         ), "\r\n")
-server = smtplib.SMTP('gexc.absa.co.za')
+server = smtplib.SMTP('smtpmailserver.domain.com')
 server.sendmail(FROM, [TO], BODY)
 server.quit()

@@ -1,13 +1,13 @@
 region:
     region1:
-        name: absaprd01
-        ipaddress: 22.240.212.1
-        clirootpassword: rackattack
+        name: regionname
+        ipaddress: 1.2.3.4
+        clirootpassword: apassword
         sympaccount: cloud_admin
         sympusername: admin
-        symppassword: Str@t0sc@l3.absa!
+        symppassword: apassword
     email:
-        server: 'gexc.absa.co.za'
+        server: 'mail.mail.co.za'
         port: '25'
         user: ""
         password: ""
