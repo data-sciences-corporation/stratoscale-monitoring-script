@@ -42,10 +42,11 @@ import yaml                                                             # For re
 import zipfile                                                          # For compressing the report info for email
 import smtplib                                                          # For emailing the report
 import ssl                                                              # For email security
+import string								# For string things
 
 # CONFIG VARIABLES
-rootpath = os.getcwd()                                                  # Get the root path
-config = yaml.load(open('config.yml', 'r'))                             # Pull in config information from YML file
+rootpath = os.path.dirname(os.path.abspath(__file__))                                                  # Get the root path
+config = yaml.load(open(rootpath + '/config.yml', 'r'))                             # Pull in config information from YML file
 testdirectory = rootpath + "/" + config['framework']['directory']['test'] + "/"  # Generate directory string for test
 reportdirectory = rootpath + "/" + config['framework']['directory']['report'] + "/"  # Generate dir string for reports
 
@@ -75,26 +76,26 @@ reportfile.close()                                                      # Close 
 
 # ZIP REPORT FILES
 archive = zipfile.ZipFile(reportdirectory + reportfilename + ".zip", "w")  # Open a zip file
-archive.write(config['framework']['directory']['report'])
+archive.write(reportdirectory)
 for report in os.listdir(reportdirectory):                              # Iterate through all reports
     if ".zip" not in report:                                            # Ignore zip files
         if reportfilename in report:                                    # Check if current report is current
-            archive.write(os.path.join(config['framework']['directory']['report'], report))  # Add report to archive
+            archive.write(os.path.join(reportdirectory, report))  	# Add report to archive
             os.remove(reportdirectory + report)                         # Remove processed report file
 archive.close()                                                         # Close the report archive when done
 
-# EMAIL REPORT TO RECIPIENTS
-# TODO - v1.0 - Email zipped report data to addresses in recipients
-
-sender_email = "richard.raymond@datasciences.co.za"
-receiver_email = "richard.raymond@datasciences.co.za"
-message = """\
-Subject: Hi there
-
-This message is sent from Python."""
-
-context = ssl.create_default_context()
-with smtplib.SMTP(config['region']['email']['server'], config['region']['email']['port']) as server:
-    server.starttls(context=context)
-    server.login(sender_email, config['region']['email']['password'])
-    server.sendmail(sender_email, receiver_email, fullreport)
+# EMAIL TIME
+SUBJECT = "Stratoscale Region: absaprd01 Monitoring Report"
+TO = "john.vanderveen@barclays.com; richard.raymond@datasciences.co.za"
+FROM = "absaprd01@stratoscale.com"
+text = fullreport
+BODY = string.join((
+        "From: %s" % FROM,
+        "To: %s" % TO,
+        "Subject: %s" % SUBJECT ,
+        "",
+        text
+        ), "\r\n")
+server = smtplib.SMTP('gexc.absa.co.za')
+server.sendmail(FROM, [TO], BODY)
+server.quit()

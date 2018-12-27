@@ -1,17 +1,16 @@
 region:
     region1:
-        name: dsclab
-        ipaddress: IPADDRESS
-        cliusername: CLIUSER
-        clirootpassword: CLIPASSWORD
-        sympaccount: SYMPHONYCLOUDACCOUNT
-        sympusername: SYMPHONYUSERNAME
-        symppassword: SYMPHONYPASSWORD
+        name: absaprd01
+        ipaddress: 22.240.212.1
+        clirootpassword: rackattack
+        sympaccount: cloud_admin
+        sympusername: admin
+        symppassword: Str@t0sc@l3.absa!
     email:
-        server: 'smtp.office365.com'
-        port: '587'
-        user: username
-        password: "M!ch3ll3_90"
+        server: 'gexc.absa.co.za'
+        port: '25'
+        user: ""
+        password: ""
 framework:
     directory:
         report: 'reports'
