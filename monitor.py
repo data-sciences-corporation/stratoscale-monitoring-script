@@ -30,9 +30,6 @@
 #   - Added better directory & error handling (directories are defined in the config.yml                               #
 # v0.4 - 19 December 2018 (Richard Raymond)                                                                            #
 #   - Report archive/compression added                                                                                 #
-# v0.5 - 22 February 2019                                                                                              #
-#   - Improved e-mail handling to allow for higher test interval, lower e-mail interval config                         #
-#   - Report cleaner                                                                                                   #
 #                                                                                                                      #
 ########################################################################################################################
 
@@ -47,11 +44,10 @@ import smtplib                                                          # For em
 import string                                                           # For string things
 
 # CONFIG VARIABLES
-rootpath = os.getcwd()                                                  # Get the root path
-config = yaml.load(open('config.yml', 'r'))                             # Pull in config information from YML file
+rootpath = os.path.dirname(os.path.abspath(__file__))                   # Get the root path
+config = yaml.load(open(rootpath + '/config.yml', 'r'))                 # Pull in config information from YML file
 testdirectory = rootpath + "/" + config['framework']['directory']['test'] + "/"  # Generate directory string for test
 reportdirectory = rootpath + "/" + config['framework']['directory']['report'] + "/"  # Generate dir string for reports
-region = config['region']['region1']['name']                            # Get the region name
 
 # SPLASH SCREEN
 print(sys.path)
@@ -79,28 +75,26 @@ reportfile.close()                                                      # Close 
 
 # ZIP REPORT FILES
 archive = zipfile.ZipFile(reportdirectory + reportfilename + ".zip", "w")  # Open a zip file
-archive.write(config['framework']['directory']['report'])
+archive.write(reportdirectory)
 for report in os.listdir(reportdirectory):                              # Iterate through all reports
     if ".zip" not in report:                                            # Ignore zip files
         if reportfilename in report:                                    # Check if current report is current
-            archive.write(os.path.join(config['framework']['directory']['report'], report))  # Add report to archive
+            archive.write(os.path.join(reportdirectory, report))        # Add report to archive
             os.remove(reportdirectory + report)                         # Remove processed report file
 archive.close()                                                         # Close the report archive when done
 
-# EMAIL REPORT TO RECIPIENTS
-counter = open(reportdirectory + 'working/mailcounter.txt', "w+")      # Create a report file.
-
-SUBJECT = "Stratoscale Region: " + region + " absaprd01 Monitoring Report"
-TO = config['region']['email']['recipients']
-FROM = region + "@stratoscale.com"
+# EMAIL TIME
+regionname = config['region']['region1']['name']
+SUBJECT = "Stratoscale Region: " + regionname + " Monitoring Report"
+FROM = regionname + "@stratoscale.com"
 text = fullreport
 BODY = string.join((
-        "From: %s" % FROM,
-        "To: %s" % TO,
-        "Subject: %s" % SUBJECT ,
-        "",
-        text
-        ), "\r\n")
+              "From: %s" % FROM,
+              "To: %s" % ",".join(config['region']['email']['recipients']),
+              "Subject: %s" % SUBJECT,
+              "",
+              text
+              ), "\r\n")
 server = smtplib.SMTP(config['region']['email']['server'])
-server.sendmail(FROM, [TO], BODY)
-server.q
+server.sendmail(FROM, config['region']['email']['recipients'], BODY)
+server.quit()

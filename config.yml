@@ -9,7 +9,7 @@ region:
         symppassword: SYMPHONYPASSWORD
     email:
         server: 'gexc.absa.co.za'
-        recipients: "john.vanderveen@barclays.com; manesh.naransammy@absa.co.za"
+        recipients: ['John.VanDerVeen@barclayscorp.com','manesh.naransammy@absa.co.za','helpdesk@datasciences.co.za']
         port: '587'
         user: username
         password: "password"
