@@ -30,6 +30,9 @@
 #   - Added better directory & error handling (directories are defined in the config.yml                               #
 # v0.4 - 19 December 2018 (Richard Raymond)                                                                            #
 #   - Report archive/compression added                                                                                 #
+# v0.5 - 22 February 2019                                                                                              #
+#   - Improved e-mail handling to allow for higher test interval, lower e-mail interval config                         #
+#   - Report cleaner                                                                                                   #
 #                                                                                                                      #
 ########################################################################################################################
 
@@ -41,13 +44,14 @@ import subprocess                                                       # For ru
 import yaml                                                             # For reading the config file
 import zipfile                                                          # For compressing the report info for email
 import smtplib                                                          # For emailing the report
-import ssl                                                              # For email security
+import string                                                           # For string things
 
 # CONFIG VARIABLES
 rootpath = os.getcwd()                                                  # Get the root path
 config = yaml.load(open('config.yml', 'r'))                             # Pull in config information from YML file
 testdirectory = rootpath + "/" + config['framework']['directory']['test'] + "/"  # Generate directory string for test
 reportdirectory = rootpath + "/" + config['framework']['directory']['report'] + "/"  # Generate dir string for reports
+region = config['region']['region1']['name']                            # Get the region name
 
 # SPLASH SCREEN
 print(sys.path)
@@ -84,17 +88,19 @@ for report in os.listdir(reportdirectory):                              # Iterat
 archive.close()                                                         # Close the report archive when done
 
 # EMAIL REPORT TO RECIPIENTS
-# TODO - v1.0 - Email zipped report data to addresses in recipients
+counter = open(reportdirectory + 'working/mailcounter.txt', "w+")      # Create a report file.
 
-sender_email = "richard.raymond@datasciences.co.za"
-receiver_email = "richard.raymond@datasciences.co.za"
-message = """\
-Subject: Hi there
-
-This message is sent from Python."""
-
-context = ssl.create_default_context()
-with smtplib.SMTP(config['region']['email']['server'], config['region']['email']['port']) as server:
-    server.starttls(context=context)
-    server.login(sender_email, config['region']['email']['password'])
-    server.sendmail(sender_email, receiver_email, fullreport)
+SUBJECT = "Stratoscale Region: " + region + " absaprd01 Monitoring Report"
+TO = config['region']['email']['recipients']
+FROM = region + "@stratoscale.com"
+text = fullreport
+BODY = string.join((
+        "From: %s" % FROM,
+        "To: %s" % TO,
+        "Subject: %s" % SUBJECT ,
+        "",
+        text
+        ), "\r\n")
+server = smtplib.SMTP(config['region']['email']['server'])
+server.sendmail(FROM, [TO], BODY)
+server.q
