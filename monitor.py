@@ -93,7 +93,7 @@ archive.close()                                                         # Close 
 reports = os.listdir(reportdirectory)                                   # Get the directory information
 count = len(reports)                                                    # Show amount of files in directory
 if count > int(config['framework']['directory']['reportcount']):        # Check if more files than wanted
-    removenum = count - int(config['framework']['directory']['reportcount']) # Calculate how many to remove
+    removenum = count - int(config['framework']['directory']['reportcount'])  # Calculate how many to remove
 
     scriptfile = rootpath + "/reportclean.sh"                           # Create a bash script name
     bashscript = open(scriptfile, "w+")                                 # Open the script for writing
