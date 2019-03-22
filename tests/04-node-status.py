@@ -97,6 +97,6 @@ reportfile.close()
 # ----------------------------------------------------------------------------------------------------------------------
 # ADD CURRENT TEST RESULT TO OVERALL REPORT STATUS
 statusfile = open(rootpath + "/currentstatus", "r+")
-if int(statusfile.read) > result:
+if int(statusfile.read()) > result:
     statusfile.write(str(result))
 statusfile.close()

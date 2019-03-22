@@ -77,7 +77,7 @@ for test in tests:                                                      # For ea
     subprocess.call(['python', testdirectory + test, test[:-3], rootpath, reportfilename])  # Run the test script
 
 # COPY LATEST REPORT FOR EMAIL
-copyfile(reportfilename, rootpath + "/latestreport.txt")
+copyfile(reportdirectory + reportfilename + ".txt", rootpath + "/latestreport.txt")
 
 # ZIP REPORT FILES
 archive = zipfile.ZipFile(reportdirectory + reportfilename + ".zip", "w")  # Open a zip file

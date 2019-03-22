@@ -42,7 +42,7 @@ statusfile.close()                                                      # Close 
 # EMAIL TIME
 regionname = config['region']['region1']['name']                        # Pull region name from config file
 SUBJECT = "Stratoscale Region: " + regionname                           # Create first part of subject line
-SUBJECT = SUBJECT + " Monitoring Report [" + config['framework']['errortypes']['status'] + "]" # Create second part
+SUBJECT = SUBJECT + " - Monitoring Report [" + config['framework']['errortypes'][int(status)] + "]" # Create second part
 FROM = regionname + "@stratoscale.com"                                  # Create from address
 text = fullreport                                                       # Add report to email body
 BODY = string.join((                                                    # Join e-mail components for sending
@@ -52,6 +52,6 @@ BODY = string.join((                                                    # Join e
               "",
               text
               ), "\r\n")
-server = smtplib.SMTP(config['region']['email']['server'])              # Connect to email server from config file
+server = smtplib.SMTP(str(config['region']['email']['server']))              # Connect to email server from config file
 server.sendmail(FROM, config['region']['email']['recipients'], BODY)    # Send email
 server.quit()                                                           # Disconnect from e-mail server

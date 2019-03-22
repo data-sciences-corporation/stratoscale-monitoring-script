@@ -55,7 +55,7 @@ scriptfile = scriptdirectory + sys.argv[1] + ".sh"                          # Cr
 
 # Make a bash script
 bashscript = open(scriptfile, "w+")
-bashscript.write("#!/bin/bash\nconsul exec df -h | awk {\'print $1 $6\'}")
+bashscript.write("#!/bin/bash\nconsul exec df -h | grep dev | awk {\'print $1 $6\'}")
 bashscript.close()
 
 # Allow execute access
@@ -103,6 +103,6 @@ reportfile.close()  # Close report file
 # ----------------------------------------------------------------------------------------------------------------------
 # ADD CURRENT TEST RESULT TO OVERALL REPORT STATUS
 statusfile = open(rootpath + "/currentstatus", "r+")
-if int(statusfile.read) > result:
+if int(statusfile.read()) > result:
     statusfile.write(str(result))
 statusfile.close()
