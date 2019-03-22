@@ -55,7 +55,7 @@ scriptfile = scriptdirectory + sys.argv[1] + ".sh"                          # Cr
 
 # Make a bash script
 bashscript = open(scriptfile, "w+")
-bashscript.write("#!/bin/bash\nconsul exec df -h | | awk {\'print $1 $6\'}")
+bashscript.write("#!/bin/bash\nconsul exec df -h | awk {\'print $1 $6\'}")
 bashscript.close()
 
 # Allow execute access

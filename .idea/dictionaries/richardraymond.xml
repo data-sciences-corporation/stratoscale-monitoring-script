@@ -1,12 +1,17 @@
 <component name="ProjectDictionaryState">
   <dictionary name="richardraymond">
     <words>
+      <w>bashscriptcommand</w>
       <w>currentstatus</w>
       <w>errorfile</w>
       <w>errorfilename</w>
       <w>fullreport</w>
       <w>getnewestreport</w>
       <w>latestreport</w>
+      <w>latr</w>
+      <w>removenum</w>
+      <w>reportclean</w>
+      <w>reportcount</w>
       <w>reportdir</w>
       <w>reportdirectory</w>
       <w>reportfile</w>

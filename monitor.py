@@ -17,7 +17,7 @@
 #   whatever tests exists there.                                                                                       #
 #   Each test script will be responsible for appending it's results to a report file in the "Reports" folder.          #
 #   This script will then e-mail that report to all mail recipients references in the config file.                     #
-#               t                                                                                                       #
+#                                                                                                                      #
 # -------------------------------------------------------------------------------------------------------------------- #
 #                                                                                                                      #
 # CHANGELOG                                                                                                            #
@@ -32,6 +32,7 @@
 #   - Report archive/compression added                                                                                 #
 # v0.5 - 22 March 2019 (Richard Raymond)                                                                               #
 #   - Improving e-mail granularity by adding a file to read on e-mail check                                            #
+#   - Clean up report files                                                                                            #
 #                                                                                                                      #
 ########################################################################################################################
 
@@ -42,8 +43,8 @@ import datetime                                                         # For da
 import subprocess                                                       # For running os commands
 import yaml                                                             # For reading the config file
 import zipfile                                                          # For compressing the report info for email
-import smtplib                                                          # For emailing the report
-import string                                                           # For string things
+# import smtplib                                                          # For emailing the report
+# import string                                                           # For string things
 from shutil import copyfile
 
 # CONFIG VARIABLES
@@ -88,4 +89,20 @@ for report in os.listdir(reportdirectory):                              # Iterat
             os.remove(reportdirectory + report)                         # Remove processed report file
 archive.close()                                                         # Close the report archive when done
 
-# TODO: Clean up reports more than 500
+# CLEAN REPORTS DIRECTORY
+reports = os.listdir(reportdirectory)                                   # Get the directory information
+count = len(reports)                                                    # Show amount of files in directory
+if count > int(config['framework']['directory']['reportcount']):        # Check if more files than wanted
+    removenum = count - int(config['framework']['directory']['reportcount']) # Calculate how many to remove
+
+    scriptfile = rootpath + "/reportclean.sh"                           # Create a bash script name
+    bashscript = open(scriptfile, "w+")                                 # Open the script for writing
+    bashscript.write("#!/bin/bash\nls -latr | grep report | head -n " + str(removenum) + " | awk {'print $9'}")
+    bashscript.close()                                                  # After writing commands close file
+    os.chmod(scriptfile, 0o755)  # Force octal data type                # Make script file executable
+    process = subprocess.Popen(scriptfile, stdout=subprocess.PIPE)      # Run script file
+    output, error = process.communicate()                               # Collect output from script file
+
+    for filename in output:                                             # Go through each file to be removed
+        os.remove(reportdirectory + "/" + filename)                     # Remove the specific report file
+    os.remove(scriptfile)                                               # Remove the script file
