@@ -1,6 +1,7 @@
 <component name="ProjectDictionaryState">
   <dictionary name="richardraymond">
     <words>
+      <w>currentstatus</w>
       <w>errorfile</w>
       <w>errorfilename</w>
       <w>fullreport</w>
@@ -13,6 +14,7 @@
       <w>scriptfile</w>
       <w>scriptname</w>
       <w>sshcommand</w>
+      <w>statusfile</w>
       <w>stratoscale</w>
       <w>symp</w>
       <w>sympaccount</w>

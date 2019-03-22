@@ -24,6 +24,8 @@
 # v0.3 - 19 December 2018 (Richard Raymond)                                                                            #
 #   Source: 00-template.py [v0.3] - Requires: monitor.py [v0.4]                                                        #
 #   - Added better directory & error handling (directories are defined in the config.yml                               #
+# v0.4 - 22 March 2019 (Richard Raymond)                                                                               #
+#   - Added currentstatus file, to allow for checking test results (improved e-mail granularity)                       #
 # TODO vX.X - Date (Author)                                                                                            #
 # TODO Source: 00-template.py [X.X] - Requires: monitor.py [vX.X]                                                      #
 # TODO Changes between last build to this build                                                                        #
@@ -77,3 +79,8 @@ if result != 0:                                                             # Ch
     reportfile.write("\tPlease look at [" + errorfilename + ".txt] for further details.")
 reportfile.write('\n' + config['framework']['formatting']['linebreak'] + '\n')  # Add line break to report file per test
 reportfile.close()                                                          # Close report file
+# ADD CURRENT TEST RESULT TO OVERALL REPORT STATUS
+statusfile = open(rootpath + "/currentstatus", "r+")
+if int(statusfile.read) > result:
+    statusfile.write(str(result))
+statusfile.close()

@@ -30,6 +30,8 @@
 #   - Added better directory & error handling (directories are defined in the config.yml                               #
 # v0.4 - 19 December 2018 (Richard Raymond)                                                                            #
 #   - Report archive/compression added                                                                                 #
+# v0.5 - 22 March 2019 (Richard Raymond)                                                                               #
+#   - Improving e-mail granularity by adding a file to read on e-mail check                                            #
 #                                                                                                                      #
 ########################################################################################################################
 
@@ -51,7 +53,7 @@ reportdirectory = rootpath + "/" + config['framework']['directory']['report'] + 
 
 # SPLASH SCREEN
 print(sys.path)
-print('STRATOSCALE - QUICK MONITOR')
+print('STRATOSCALE - QUICK MONITORMONITOR')
 
 # CREATE SESSION REPORT FILE
 now = datetime.datetime.now()                                           # Get the date & time (for the filename)
@@ -61,6 +63,11 @@ reportfile = open(reportdirectory + reportfilename + '.txt', "w+")      # Create
 reportfile.write('\nSTATUS REPORT [' + config['region']['region1']['name'] + ']\n')
 reportfile.write(config['framework']['formatting']['linebreak'] + '\n')
 reportfile.close()                                                      # Close the report file for later editing.
+
+# CLEAR DATA IN CURRENT STATUS FILE
+statusfile = open(rootpath + "/currentstatus", "w")
+statusfile.write("0")
+statusfile.close()
 
 # RUN THROUGH ALL TESTS
 tests = os.listdir(testdirectory)                                       # Get the list of scripts in tests folder

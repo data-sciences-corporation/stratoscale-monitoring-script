@@ -1,6 +1,6 @@
 region:
     region1:
-        name: dsclab
+        name: REGIONNAME
         ipaddress: IPADDRESS
         cliusername: CLIUSER
         clirootpassword: CLIPASSWORD
@@ -8,10 +8,10 @@ region:
         sympusername: SYMPHONYUSERNAME
         symppassword: SYMPHONYPASSWORD
     email:
-        server: 'gexc.absa.co.za'
-        recipients: ['John.VanDerVeen@barclayscorp.com','manesh.naransammy@absa.co.za','helpdesk@datasciences.co.za']
-        port: '587'
-        user: username
+        server: 'SERVER-FQDN'
+        recipients: ['PERSON01@DOMAIN.COM','PERSON02@DOMAIN.COM','PERSON03@DOMAIN.COM']
+        port: 'MAIL-SERVER-PORT'
+        user: "username"
         password: "password"
 framework:
     directory:

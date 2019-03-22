@@ -16,9 +16,12 @@
 # -------------------------------------------------------------------------------------------------------------------- #
 #                                                                                                                      #
 # CHANGELOG                                                                                                            #
-# v0.1 - 24 December 2018 (Josef Bitschnau)                                                                            #
+# v1.0 - 24 December 2018 (Josef Bitschnau)                                                                            #
 #   Source: 00-template.py [v0.3] - Requires: monitor.py [v0.4]                                                        #
 #   - Initial version                                                                                                  #
+# v1.1 - 22 March 2019 (Richard Raymond)                                                                               #
+#   Source: 00-template.py [v0.4] - Requires: monitor.py [v0.5]                                                        #
+#   - Updated script to use latest template (adds improved e-mail granularity), no changes to test code.               #
 #                                                                                                                      #
 ########################################################################################################################
 
@@ -94,4 +97,9 @@ if result != 0:                                                             # Ch
     reportfile.write("\tPlease look at [" + errorfilename + ".txt] for further details.")
 reportfile.write('\n' + config['framework']['formatting']['linebreak'] + '\n')  # Add line break to report file per test
 reportfile.close()
-
+# ----------------------------------------------------------------------------------------------------------------------
+# ADD CURRENT TEST RESULT TO OVERALL REPORT STATUS
+statusfile = open(rootpath + "/currentstatus", "r+")
+if int(statusfile.read) > result:
+    statusfile.write(str(result))
+statusfile.close()
