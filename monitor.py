@@ -38,18 +38,18 @@
 
 # MODULES
 import sys
-import os                                                               # For os modules
-import datetime                                                         # For dates and time []
-import subprocess                                                       # For running os commands
-import yaml                                                             # For reading the config file
-import zipfile                                                          # For compressing the report info for email
+import os  # For os modules
+import datetime  # For dates and time []
+import subprocess  # For running os commands
+import yaml  # For reading the config file
+import zipfile  # For compressing the report info for email
 # import smtplib                                                          # For emailing the report
 # import string                                                           # For string things
 from shutil import copyfile
 
 # CONFIG VARIABLES
-rootpath = os.path.dirname(os.path.abspath(__file__))                   # Get the root path
-config = yaml.load(open(rootpath + '/config.yml', 'r'))                 # Pull in config information from YML file
+rootpath = os.path.dirname(os.path.abspath(__file__))  # Get the root path
+config = yaml.load(open(rootpath + '/config.yml', 'r'))  # Pull in config information from YML file
 testdirectory = rootpath + "/" + config['framework']['directory']['test'] + "/"  # Generate directory string for test
 reportdirectory = rootpath + "/" + config['framework']['directory']['report'] + "/"  # Generate dir string for reports
 
@@ -58,13 +58,13 @@ print(sys.path)
 print('STRATOSCALE - QUICK MONITORMONITOR')
 
 # CREATE SESSION REPORT FILE
-now = datetime.datetime.now()                                           # Get the date & time (for the filename)
-reportfilename = now.strftime("%Y%m%d_%H%M")                            # Create the filename
-reportfilename = 'report-' + reportfilename                             # Append the prefix [report-] to the filename
-reportfile = open(reportdirectory + reportfilename + '.txt', "w+")      # Create a report file.
+now = datetime.datetime.now()  # Get the date & time (for the filename)
+reportfilename = now.strftime("%Y%m%d_%H%M")  # Create the filename
+reportfilename = 'report-' + reportfilename  # Append the prefix [report-] to the filename
+reportfile = open(reportdirectory + reportfilename + '.txt', "w+")  # Create a report file.
 reportfile.write('\nSTATUS REPORT [' + config['region']['region1']['name'] + ']\n')
 reportfile.write(config['framework']['formatting']['linebreak'] + '\n')
-reportfile.close()                                                      # Close the report file for later editing.
+reportfile.close()  # Close the report file for later editing.
 
 # CLEAR DATA IN CURRENT STATUS FILE
 statusfile = open(rootpath + "/currentstatus", "w")
@@ -72,8 +72,8 @@ statusfile.write("0")
 statusfile.close()
 
 # RUN THROUGH ALL TESTS
-tests = os.listdir(testdirectory)                                       # Get the list of scripts in tests folder
-for test in tests:                                                      # For each script DO
+tests = os.listdir(testdirectory)  # Get the list of scripts in tests folder
+for test in tests:  # For each script DO
     subprocess.call(['python', testdirectory + test, test[:-3], rootpath, reportfilename])  # Run the test script
 
 # COPY LATEST REPORT FOR EMAIL
@@ -82,27 +82,19 @@ copyfile(reportdirectory + reportfilename + ".txt", rootpath + "/latestreport.tx
 # ZIP REPORT FILES
 archive = zipfile.ZipFile(reportdirectory + reportfilename + ".zip", "w")  # Open a zip file
 archive.write(reportdirectory)
-for report in os.listdir(reportdirectory):                              # Iterate through all reports
-    if ".zip" not in report:                                            # Ignore zip files
-        if reportfilename in report:                                    # Check if current report is current
-            archive.write(os.path.join(reportdirectory, report))        # Add report to archive
-            os.remove(reportdirectory + report)                         # Remove processed report file
-archive.close()                                                         # Close the report archive when done
+for report in os.listdir(reportdirectory):  # Iterate through all reports
+    if ".zip" not in report:  # Ignore zip files
+        if reportfilename in report:  # Check if current report is current
+            archive.write(os.path.join(reportdirectory, report))  # Add report to archive
+            os.remove(reportdirectory + report)  # Remove processed report file
+archive.close()  # Close the report archive when done
 
 # CLEAN REPORTS DIRECTORY
-reports = os.listdir(reportdirectory)                                   # Get the directory information
-count = len(reports)                                                    # Show amount of files in directory
-if count > int(config['framework']['directory']['reportcount']):        # Check if more files than wanted
-    removenum = count - int(config['framework']['directory']['reportcount'])  # Calculate how many to remove
-
-    scriptfile = rootpath + "/reportclean.sh"                           # Create a bash script name
-    bashscript = open(scriptfile, "w+")                                 # Open the script for writing
-    bashscript.write("#!/bin/bash\nls -latr | grep report | head -n " + str(removenum) + " | awk {'print $9'}")
-    bashscript.close()                                                  # After writing commands close file
-    os.chmod(scriptfile, 0o755)  # Force octal data type                # Make script file executable
-    process = subprocess.Popen(scriptfile, stdout=subprocess.PIPE)      # Run script file
-    output, error = process.communicate()                               # Collect output from script file
-
-    for filename in output:                                             # Go through each file to be removed
-        os.remove(reportdirectory + "/" + filename)                     # Remove the specific report file
-    os.remove(scriptfile)                                               # Remove the script file
+reports = os.listdir(reportdirectory)  # Get the directory information
+count = len(reports)  # Show amount of files in directory
+if count > int(config['framework']['directory']['reportcount']):  # Check if more files than wanted
+    mtime = lambda f: os.stat(os.path.join(reportdirectory, f)).st_mtime
+    list = list(sorted(os.listdir(reportdirectory), key=mtime))
+    list = list[0:(len(list) - int(config['framework']['directory']['reportcount']))]
+    for dfile in list:
+        os.remove(reportdirectory + dfile)
