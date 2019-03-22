@@ -2,11 +2,11 @@ region:
     region1:
         name: REGIONNAME
         ipaddress: IPADDRESS
-        cliusername: CLIUSER
-        clirootpassword: CLIPASSWORD
-        sympaccount: SYMPHONYCLOUDACCOUNT
-        sympusername: SYMPHONYUSERNAME
-        symppassword: SYMPHONYPASSWORD
+        cliusername: CLI-USER
+        clirootpassword: CLI-PASSWORD
+        sympaccount: SYMPHONY-CLOUD-ACCOUNT
+        sympusername: SYMPHONY-USERNAME
+        symppassword: SYMPHONY-PASSWORD
     email:
         server: 'SERVER-FQDN'
         recipients: ['PERSON01@DOMAIN.COM','PERSON02@DOMAIN.COM','PERSON03@DOMAIN.COM']
