@@ -16,13 +16,13 @@ region:
 framework:
     directory:
         report: 'reports'
-        reportcount: '250'
+        reportcount: '500'
         script: 'scripts'
         test: 'tests'
         working: 'working'
     errortypes:
-        0: SUCCESS
-        1: WARN
+        0: HEALTHY
+        1: WARNING
         2: ERROR
         3: CRITICAL
         4: UNDEFINED

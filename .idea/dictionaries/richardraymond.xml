@@ -5,6 +5,8 @@
       <w>errorfile</w>
       <w>errorfilename</w>
       <w>fullreport</w>
+      <w>getnewestreport</w>
+      <w>latestreport</w>
       <w>reportdir</w>
       <w>reportdirectory</w>
       <w>reportfile</w>

@@ -44,6 +44,7 @@ import yaml                                                             # For re
 import zipfile                                                          # For compressing the report info for email
 import smtplib                                                          # For emailing the report
 import string                                                           # For string things
+from shutil import copyfile
 
 # CONFIG VARIABLES
 rootpath = os.path.dirname(os.path.abspath(__file__))                   # Get the root path
@@ -74,11 +75,8 @@ tests = os.listdir(testdirectory)                                       # Get th
 for test in tests:                                                      # For each script DO
     subprocess.call(['python', testdirectory + test, test[:-3], rootpath, reportfilename])  # Run the test script
 
-# READ OUT TEST RESULTS, COMPRESS AND EMAIL RESULTS
-reportfile = open(reportdirectory + reportfilename + '.txt', "r")       # Open the report file
-fullreport = reportfile.read()                                          # Read the report file (save for mail body)
-print(fullreport)                                                       # Read rge report file out to the user.
-reportfile.close()                                                      # Close the report file for later editing.
+# COPY LATEST REPORT FOR EMAIL
+copyfile(reportfilename, rootpath + "/latestreport.txt")
 
 # ZIP REPORT FILES
 archive = zipfile.ZipFile(reportdirectory + reportfilename + ".zip", "w")  # Open a zip file
@@ -90,18 +88,4 @@ for report in os.listdir(reportdirectory):                              # Iterat
             os.remove(reportdirectory + report)                         # Remove processed report file
 archive.close()                                                         # Close the report archive when done
 
-# EMAIL TIME
-regionname = config['region']['region1']['name']
-SUBJECT = "Stratoscale Region: " + regionname + " Monitoring Report"
-FROM = regionname + "@stratoscale.com"
-text = fullreport
-BODY = string.join((
-              "From: %s" % FROM,
-              "To: %s" % ",".join(config['region']['email']['recipients']),
-              "Subject: %s" % SUBJECT,
-              "",
-              text
-              ), "\r\n")
-server = smtplib.SMTP(config['region']['email']['server'])
-server.sendmail(FROM, config['region']['email']['recipients'], BODY)
-server.quit()
+# TODO: Clean up reports more than 500
