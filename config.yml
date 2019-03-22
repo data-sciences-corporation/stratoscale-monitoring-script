@@ -1,7 +1,7 @@
 region:
     region1:
-        name: REGIONNAME
-        ipaddress: IPADDRESS
+        name: REGION-NAME
+        ipaddress: IP-ADDRESS
         cliusername: CLI-USER
         clirootpassword: CLI-PASSWORD
         sympaccount: SYMPHONY-CLOUD-ACCOUNT
