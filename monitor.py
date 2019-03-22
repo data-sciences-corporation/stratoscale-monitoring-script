@@ -16,8 +16,8 @@
 #   All of the tests that will be run will be created in "Tests" sub-directory (this script will iterate through       #
 #   whatever tests exists there.                                                                                       #
 #   Each test script will be responsible for appending it's results to a report file in the "Reports" folder.          #
-#   This script will then e-mail that report to all mail recipients references in the "recipients.txt" file.           #
-#                                                                                                                      #
+#   This script will then e-mail that report to all mail recipients references in the config file.                     #
+#               t                                                                                                       #
 # -------------------------------------------------------------------------------------------------------------------- #
 #                                                                                                                      #
 # CHANGELOG                                                                                                            #

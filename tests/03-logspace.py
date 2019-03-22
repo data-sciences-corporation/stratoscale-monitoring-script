@@ -55,7 +55,7 @@ scriptfile = scriptdirectory + sys.argv[1] + ".sh"                          # Cr
 
 # Make a bash script
 bashscript = open(scriptfile, "w+")
-bashscript.write("#!/bin/bash\nconsul exec df -h | grep log | awk {\'print $1 $6\'}")
+bashscript.write("#!/bin/bash\nconsul exec df -h | | awk {\'print $1 $6\'}")
 bashscript.close()
 
 # Allow execute access
@@ -71,13 +71,13 @@ worstcase = 0
 for i in range(len(nodelist)-1):
         nodelist[i] = nodelist[i].strip("\n")
         node, space = nodelist[i].split(":")
-        if int(space) > 85:
+        if int(space) > 90:
                 worstcase = 3
                 error_message = error_message + "\n CRITICAL: " + node + " - " + space + "% full"
-        elif int(space) > 75:
+        elif int(space) > 85:
                 worstcase = 2
                 error_message = error_message + "\n ERROR: " + node + " - " + space + "% full"
-        elif int(space) > 65:
+        elif int(space) > 75:
                 worstcase = 1
                 error_message = error_message + "\n WARNING: " + node + " - " + space + "% full"
         if int(result) < int(worstcase):
