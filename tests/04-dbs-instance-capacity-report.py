@@ -35,47 +35,65 @@
 # MODULES
 import sys
 import yaml
-import subprocess
+import requests
+import symphony_client
+
 
 # PARAMETERS
 # 1 - Script name, 2 - Root path of calling script, 3 - Report filename
 
+def create_symp_client(i_url, i_domain, i_username, i_password, i_project, i_insecure, i_cert_file=None):
+    my_session = requests.Session()
+    if i_insecure is True:
+        my_session.verify = False
+    elif i_cert_file is not None:
+        my_session.cert = i_cert_file
+    sympclient = symphony_client.Client(url=i_url, session=my_session)
+    sympclient.login(domain=i_domain, username=i_username, password=i_password,
+                     project=i_project)
+    return sympclient
+
 # CONFIG VARIABLES
 rootpath = sys.argv[2]
-config = yaml.load(open(rootpath + '/config.yml', 'r'))                     # Pull in config information from YML file.
-johntestdirectory = rootpath + "/" + config['framework']['directory']['test'] + "/"        # Generate dir for test
-reportdirectory = rootpath + "/" + config['framework']['directory']['report'] + "/"    # Generate dir for reports
+config = yaml.load(open(rootpath + '/config.yml', 'r'))  # Pull in config information from YML file.
+testdirectory = rootpath + "/" + config['framework']['directory']['test'] + "/"  # Generate dir for test
+reportdirectory = rootpath + "/" + config['framework']['directory']['report'] + "/"  # Generate dir for reports
 workingdirectory = rootpath + "/" + config['framework']['directory']['working'] + "/"  # Generate dir for working dir
-scriptdirectory = rootpath + "/" + config['framework']['directory']['script'] + "/"    # Generate dir for sub scripts
+scriptdirectory = rootpath + "/" + config['framework']['directory']['script'] + "/"  # Generate dir for sub scripts
 
 # SCRIPT VARIABLES
-result = 4                                                                  # Initialize OK/NOK marker
-error_message = "*UPDATE ME*"                                               # Error message to provide overview
-test_data = "*UPDATE ME*"                                                   # Full error contents
+result = 4  # Initialize OK/NOK marker
+error_message = "*UPDATE ME*"  # Error message to provide overview
+test_data = "*UPDATE ME*"  # Full error contents
 
 # scriptfile = scriptdirectory + sys.argv[1] + ".sh"                        # Create a script file
 # ----------------------------------------------------------------------------------------------------------------------
 
-# Run the report
+# Connect to Symphony
 symp_domain = config['region']['region1']['sympaccount']
 symp_user = config['region']['region1']['sympusername']
 symp_password = config['region']['region1']['symppassword']
-subprocess.call('sh {}04-dbs-instance-capacity-report.sh {}'.format(scriptdirectory, workingdirectory, symp_domain, symp_user, symp_password), shell=True)
+symp_project = "default"
+symp_url = "https://" + config['region']['region1']['ipaddress']
+symp_insecure = "True"
+symp_certfile = "None"
+
+client = create_symp_client(symp_url, symp_domain, symp_user, symp_password, symp_project, symp_insecure, symp_certfile)
 
 # ----------------------------------------------------------------------------------------------------------------------
 # UPDATE REPORT FILE
-reportfile = open(reportdirectory + sys.argv[3] + '.txt', "a")              # Open the current report file
-reportfile.write('TEST:         ' + sys.argv[1] + '\n')                     # Open test section in report file
+reportfile = open(reportdirectory + sys.argv[3] + '.txt', "a")  # Open the current report file
+reportfile.write('TEST:         ' + sys.argv[1] + '\n')  # Open test section in report file
 reportfile.write('RESULT:       ' + config['framework']['errortypes'][result])  # Add test status to report
-if result != 0:                                                             # Check if test wasn't successful
-    errorfilename = sys.argv[3] + "_" + sys.argv[1]                         # Create a error_reportfile
-    errorfile = open(reportdirectory + errorfilename + '.txt', "w+")        # Create error report file
-    errorfile.write(test_data)                                              # Write error data to error file
-    errorfile.close()                                                       # Close error file
-    reportfile.write(" : " + error_message + '\n')                          # Add error message to report
+if result != 0:  # Check if test wasn't successful
+    errorfilename = sys.argv[3] + "_" + sys.argv[1]  # Create a error_reportfile
+    errorfile = open(reportdirectory + errorfilename + '.txt', "w+")  # Create error report file
+    errorfile.write(test_data)  # Write error data to error file
+    errorfile.close()  # Close error file
+    reportfile.write(" : " + error_message + '\n')  # Add error message to report
     reportfile.write("\tPlease look at [" + errorfilename + ".txt] for further details.")
 reportfile.write('\n' + config['framework']['formatting']['linebreak'] + '\n')  # Add line break to report file per test
-reportfile.close()                                                          # Close report file
+reportfile.close()  # Close report file
 # ADD CURRENT TEST RESULT TO OVERALL REPORT STATUS
 statusfile = open(rootpath + "/currentstatus", "r+")
 if int(statusfile.read()) > result:
