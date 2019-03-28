@@ -11,24 +11,14 @@
 # -------------------------------------------------------------------------------------------------------------------- #
 #                                                                                                                      #
 # MODULE DETAILS:                                                                                                      #
-#   This module is for TODO: Fill in script explanation                                                                #
+#   This module checks the database volume utilisation.                                                                #
 #                                                                                                                      #
 # -------------------------------------------------------------------------------------------------------------------- #
 #                                                                                                                      #
 # CHANGELOG                                                                                                            #
-# v0.1 - 18 December 2018 (Richard Raymond)                                                                            #
-#   - Template                                                                                                         #
-# v0.2 - 18 December 2018 (Richard Raymond)                                                                            #
-#   - YAML Config file handling.                                                                                       #
-#   - Added deeper error message customization (define error types in config.yaml)                                     #
-# v0.3 - 19 December 2018 (Richard Raymond)                                                                            #
-#   Source: 00-template.py [v0.3] - Requires: monitor.py [v0.4]                                                        #
-#   - Added better directory & error handling (directories are defined in the config.yml                               #
-# v0.4 - 22 March 2019 (Richard Raymond)                                                                               #
-#   - Added currentstatus file, to allow for checking test results (improved e-mail granularity)                       #
-# TODO vX.X - Date (Author)                                                                                            #
-# TODO Source: 00-template.py [X.X] - Requires: monitor.py [vX.X]                                                      #
-# TODO Changes between last build to this build                                                                        #
+# v1.0 - 29 March 2019 (Richard Raymond)                                                                               #
+#   - Initial version                                                                                                  #
+#       Source: 00-template.py [0.4] - Requires: monitor.py [v0.5]                                                     #
 #                                                                                                                      #
 ########################################################################################################################
 
@@ -37,7 +27,7 @@ import sys
 import yaml
 import requests
 import symphony_client
-
+import re
 
 # PARAMETERS
 # 1 - Script name, 2 - Root path of calling script, 3 - Report filename
@@ -62,9 +52,9 @@ workingdirectory = rootpath + "/" + config['framework']['directory']['working'] 
 scriptdirectory = rootpath + "/" + config['framework']['directory']['script'] + "/"  # Generate dir for sub scripts
 
 # SCRIPT VARIABLES
-result = 4  # Initialize OK/NOK marker
-error_message = "*UPDATE ME*"  # Error message to provide overview
-test_data = "*UPDATE ME*"  # Full error contents
+result = 0                                                                  # Initialize OK marker
+error_message = "*UPDATE ME*"                                               # Error message to provide overview
+test_data = ""                                                              # Full error contents
 
 # scriptfile = scriptdirectory + sys.argv[1] + ".sh"                        # Create a script file
 # ----------------------------------------------------------------------------------------------------------------------
@@ -77,21 +67,33 @@ symp_project = "default"
 symp_url = "https://" + config['region']['region1']['ipaddress']
 symp_insecure = True
 symp_certfile = "None"
-
-# Connect to Symphony
 client = create_symp_client(symp_url, symp_domain, symp_user, symp_password, symp_project, symp_insecure, symp_certfile)
 
 # Get List of active DBs
-new_list = [db['vm_id'] for db in client.dbs.instance.list() if db['status'] == 'Active']
+all_db_data = [db for db in client.dbs.instance.list() if db['status'] == 'Active']
+vm_ids = [db['vm_id'] for db in all_db_data]
 # import ipdb; ipdb.set_trace()
 # Get list of connected VMs
 gcm_vms = client.gcm.guest.list_connected()
 # Get list of DBs with connected VMs
-connected_vms = [vm for vm in new_list if vm in gcm_vms]
+connected_vms = [vm for vm in vm_ids if vm in gcm_vms]
 # Get capacity for each connected DB VM
 for vm_id in connected_vms:
     return_result = client.gcm.guest.run(str(vm_id), 'cmd.run', args='df -h --output=size,pcent,target /dev/vdb')['ret']
-
+    test_data = test_data + "------ VM" + str(vm_id) + "------\n" + str(return_result) + "\n"
+    percent_full = re.search('\d(?=%)', return_result).group(0)
+    if int(percent_full) > 90:
+        worstcase = 3
+        error_message = error_message + "\n CRITICAL: " + vm_id + " - " + percent_full + "% full"
+    elif int(percent_full) > 85:
+        worstcase = 2
+        error_message = error_message + "\n ERROR: " + vm_id + " - " + percent_full + "% full"
+    elif int(percent_full) > 75:
+        worstcase = 1
+        error_message = error_message + "\n WARNING: " + vm_id + " - " + percent_full + "% full"
+    if int(result) < int(worstcase):
+        result = worstcase
+    worstcase = 0
 
 # ----------------------------------------------------------------------------------------------------------------------
 # UPDATE REPORT FILE
