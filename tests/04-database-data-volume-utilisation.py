@@ -29,9 +29,7 @@ import requests
 import symphony_client
 import re
 
-# PARAMETERS
-# 1 - Script name, 2 - Root path of calling script, 3 - Report filename
-
+# DEFINITIONS
 def create_symp_client(i_url, i_domain, i_username, i_password, i_project, i_insecure, i_cert_file=None):
     my_session = requests.Session()
     if i_insecure is True:
@@ -43,6 +41,8 @@ def create_symp_client(i_url, i_domain, i_username, i_password, i_project, i_ins
                      project=i_project)
     return sympclient
 
+# PARAMETERS
+# 1 - Script name, 2 - Root path of calling script, 3 - Report filename
 # CONFIG VARIABLES
 rootpath = sys.argv[2]
 config = yaml.load(open(rootpath + '/config.yml', 'r'))  # Pull in config information from YML file.
