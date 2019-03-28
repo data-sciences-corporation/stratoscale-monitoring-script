@@ -75,10 +75,23 @@ symp_user = config['region']['region1']['sympusername']
 symp_password = config['region']['region1']['symppassword']
 symp_project = "default"
 symp_url = "https://" + config['region']['region1']['ipaddress']
-symp_insecure = "True"
+symp_insecure = True
 symp_certfile = "None"
 
+# Connect to Symphony
 client = create_symp_client(symp_url, symp_domain, symp_user, symp_password, symp_project, symp_insecure, symp_certfile)
+
+# Get List of active DBs
+new_list = [db['vm_id'] for db in client.dbs.instance.list() if db['status'] == 'Active']
+# import ipdb; ipdb.set_trace()
+# Get list of connected VMs
+gcm_vms = client.gcm.guest.list_connected()
+# Get list of DBs with connected VMs
+connected_vms = [vm for vm in new_list if vm in gcm_vms]
+# Get capacity for each connected DB VM
+for vm_id in connected_vms:
+    return_result = client.gcm.guest.run(str(vm_id), 'cmd.run', args='df -h --output=size,pcent,target /dev/vdb')['ret']
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 # UPDATE REPORT FILE
