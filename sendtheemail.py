@@ -55,7 +55,7 @@ BODY = string.join((  # Join e-mail components for sending
     "",
     text
 ), "\r\n")
-server = smtplib.SMTP(config['region']['email']['server'])  # Connect to email server from config file
-server.sendmail(FROM, config['region']['email']['recipients'], BODY)  # Send email
+server = smtplib.SMTP(config['region']['email']['server'])              # Connect to email server from config file
+server.sendmail(FROM, config['region']['email']['recipients'], BODY)    # Send email
 server.quit()  # Disconnect from e-mail server
 # Disconnect from e-mail server
