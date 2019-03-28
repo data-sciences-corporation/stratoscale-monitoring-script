@@ -79,9 +79,13 @@ gcm_vms = client.gcm.guest.list_connected()
 connected_vms = [vm for vm in vm_ids if vm in gcm_vms]
 # Get capacity for each connected DB VM
 for vm_id in connected_vms:
+    # Collect data volume information
     return_result = client.gcm.guest.run(str(vm_id), 'cmd.run', args='df -h --output=size,pcent,target /dev/vdb')['ret']
+    # Update the test data variable
     test_data = test_data + "------ VM" + str(vm_id) + "------\n" + str(return_result) + "\n"
+    # Get the percentage usaed
     percent_full = re.search('\d(?=%)', return_result).group(0)
+    # Check the percentage used against the threshholds
     if int(percent_full) > 90:
         worstcase = 3
         error_message = error_message + "\n CRITICAL: " + vm_id + " - " + percent_full + "% full"
