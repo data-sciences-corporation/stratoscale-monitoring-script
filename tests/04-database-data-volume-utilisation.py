@@ -78,6 +78,7 @@ gcm_vms = client.gcm.guest.list_connected()
 # Get list of DBs with connected VMs
 connected_vms = [vm for vm in vm_ids if vm in gcm_vms]
 # Get capacity for each connected DB VM
+worstcase = 0
 for vm_id in connected_vms:
     # Collect data volume information
     return_result = client.gcm.guest.run(str(vm_id), 'cmd.run', args='df -h --output=size,pcent,target /dev/vdb')['ret']
