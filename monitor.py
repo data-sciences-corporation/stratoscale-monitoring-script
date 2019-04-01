@@ -62,10 +62,15 @@ print('STRATOSCALE - QUICK MONITORMONITOR')
 now = datetime.datetime.now()  # Get the date & time (for the filename)
 reportfilename = now.strftime("%Y%m%d_%H%M")  # Create the filename
 reportfilename = 'report-' + reportfilename  # Append the prefix [report-] to the filename
-reportfile = open(reportdirectory + reportfilename + '.txt', "w+")  # Create a report file.
+reportfile = open(reportdirectory + reportfilename + '.txt', "w+")  # Creacat st    te a report file.
 reportfile.write('\nSTATUS REPORT [' + config['region']['region1']['name'] + ']\n')
 reportfile.write(config['framework']['formatting']['linebreak'] + '\n')
-reportfile.close()  # Close the report file for later editing.
+reportfile.close()  # Close the report file for later editing.if int(statusfile.read()) < result:
+statusfile = open(rootpath + "/currentstatus", "w")
+statusfile.write('0')
+statusfile.close()
+
+
 
 # CLEAR DATA IN CURRENT STATUS FILE
 statusfile = open(rootpath + "/currentstatus", "w")
