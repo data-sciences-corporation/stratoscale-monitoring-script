@@ -3,10 +3,14 @@
     <words>
       <w>criticality</w>
       <w>currentstatus</w>
+      <w>errorfile</w>
+      <w>errorfilename</w>
       <w>errortypes</w>
       <w>fullreport</w>
       <w>latestreport</w>
       <w>reportfile</w>
+      <w>scriptdirectory</w>
+      <w>scriptfile</w>
       <w>statusfile</w>
       <w>stratoscale</w>
       <w>sympclient</w>
