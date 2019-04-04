@@ -72,6 +72,9 @@ client = create_symp_client(symp_url, symp_domain, symp_user, symp_password, sym
 # Get List of active DBs
 all_db_data = [db for db in client.dbs.instance.list() if db['status'] == 'Active']
 vm_ids = [db['vm_id'] for db in all_db_data]
+
+# TODO: Get VM names also - vm_ids = [[db['vm_id'], db['name']] for db in all_db_data]
+
 # import ipdb; ipdb.set_trace()
 # Get list of connected VMs
 gcm_vms = client.gcm.guest.list_connected()
