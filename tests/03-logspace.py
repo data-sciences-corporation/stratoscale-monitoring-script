@@ -62,28 +62,29 @@ bashscript.close()
 # Allow execute access
 os.chmod(scriptfile, 0o755)                                                 # Force octal data type
 process = subprocess.Popen(scriptfile, stdout=subprocess.PIPE)
-output, error = process.communicate()
-test_data = test_data + output
+nodelist, error = process.communicate()
+test_data = test_data + nodelist
 
-# Clean dirty bash response
-nodelist = output.split('%')
+nodelist = nodelist.rstrip().split("\n")
+
 worstcase = 0
 # Test node log space capacities for each node.
-for i in range(len(nodelist)-1):
-        nodelist[i] = nodelist[i].strip("\n")
-        node, space = nodelist[i].split(":")
-        if int(space) > 90:
-                worstcase = 3
-                error_message = error_message + "\n CRITICAL: " + node + " - " + space + "% full"
-        elif int(space) > 85:
-                worstcase = 2
-                error_message = error_message + "\n ERROR: " + node + " - " + space + "% full"
-        elif int(space) > 75:
-                worstcase = 1
-                error_message = error_message + "\n WARNING: " + node + " - " + space + "% full"
-        if int(result) < int(worstcase):
-                result = worstcase
-        worstcase = 0
+for node in nodelist:
+    print(node)
+    nodename = re.search('.+?(?=:\d*\d%)', node).group(0)
+    space = re.search("\d*\d(?=%)", node).group(0)
+    if int(space) > 90:
+            worstcase = 3
+            error_message = error_message + "\n CRITICAL: " + nodename + " - " + space + "% full"
+    elif int(space) > 85:
+            worstcase = 2
+            error_message = error_message + "\n ERROR: " + nodename + " - " + space + "% full"
+    elif int(space) > 75:
+            worstcase = 1
+            error_message = error_message + "\n WARNING: " + nodename + " - " + space + "% full"
+    if int(result) < int(worstcase):
+            result = worstcase
+    worstcase = 0
 
 # Delete bash script file
 os.remove(scriptfile)
@@ -103,8 +104,11 @@ reportfile.write('\n' + config['framework']['formatting']['linebreak'] + '\n')  
 reportfile.close()  # Close report file
 # ----------------------------------------------------------------------------------------------------------------------
 # ADD CURRENT TEST RESULT TO OVERALL REPORT STATUS
-statusfile = open(rootpath + "/currentstatus", "r+")
-if int(statusfile.read()) < result:
+statusfile = open(rootpath + "/currentstatus", "r")
+current_status = int(statusfile.read())
+statusfile.close()
+#import ipdb; ipdb.set_trace()
+if current_status < result:
+    statusfile = open(rootpath + "/currentstatus", "w")
     statusfile.truncate(0)
     statusfile.write(str(result))
-statusfile.close()

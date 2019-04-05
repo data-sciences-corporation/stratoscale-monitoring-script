@@ -72,13 +72,13 @@ statusfile.close()
 
 # CLEAR DATA IN CURRENT STATUS FILE
 statusfile = open(rootpath + "/currentstatus", "w")
-statusfile.write("0")
+statusfile.write('0')
 statusfile.close()
 
 # RUN THROUGH ALL TESTS
 tests = os.listdir(testdirectory)  # Get the list of scripts in tests folder
 for test in tests:  # For each script DO
-    print("Running Test ------ >" + str(test))
+    print("Running Test ------> " + str(test))
     subprocess.call(['python', testdirectory + test, test[:-3], rootpath, reportfilename])  # Run the test script
 
 # COPY LATEST REPORT FOR EMAIL

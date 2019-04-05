@@ -92,7 +92,7 @@ for vm_id in connected_vms:
     # Update the test data variable
     test_data = test_data + "------ VM" + str(vm_id) + "------\n" + str(return_result) + "\n"
     # Get the percentage usaed
-    percent_full = re.search('\d+\d(?=%)', return_result).group(0)
+    percent_full = re.search('\d*\d(?=%)', return_result).group(0)
     # Check the percentage used against the threshholds
     if int(percent_full) > 90:
         worstcase = 3
@@ -122,8 +122,11 @@ if result != 0:  # Check if test wasn't successful
 reportfile.write('\n' + config['framework']['formatting']['linebreak'] + '\n')  # Add line break to report file per test
 reportfile.close()  # Close report file
 # ADD CURRENT TEST RESULT TO OVERALL REPORT STATUS
-statusfile = open(rootpath + "/currentstatus", "r+")
-if int(statusfile.read()) < result:
+statusfile = open(rootpath + "/currentstatus", "r")
+current_status = int(statusfile.read())
+statusfile.close()
+#import ipdb; ipdb.set_trace()
+if current_status < result:
+    statusfile = open(rootpath + "/currentstatus", "w")
     statusfile.truncate(0)
     statusfile.write(str(result))
-statusfile.close()
