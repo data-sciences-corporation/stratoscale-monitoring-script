@@ -92,7 +92,7 @@ for vm_id in connected_vms:
     # Update the test data variable
     test_data = test_data + "------ VM" + str(vm_id) + "------\n" + str(return_result) + "\n"
     # Get the percentage usaed
-    percent_full = re.search('\d(?=%)', return_result).group(0)
+    percent_full = re.search('\d+\d(?=%)', return_result).group(0)
     # Check the percentage used against the threshholds
     if int(percent_full) > 90:
         worstcase = 3
