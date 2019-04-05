@@ -48,7 +48,7 @@ workingdirectory = rootpath + "/" + config['framework']['directory']['working'] 
 scriptdirectory = rootpath + "/" + config['framework']['directory']['script'] + "/"    # Generate dir for sub scripts
 
 # SCRIPT VARIABLES
-result = 4                                                                  # Initialize OK/NOK marker
+result = 0                                                                  # Initialize OK/NOK marker
 error_message = "*UPDATE ME*"                                               # Error message to provide overview
 test_data = "*UPDATE ME*"                                                   # Full error contents
 

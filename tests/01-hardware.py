@@ -51,26 +51,9 @@ test_data = ""                                                   # Full error co
 # ----------------------------------------------------------------------------------------------------------------------
 # TEST SCRIPT DATA GOES HERE
 
-# symproc1 = subprocess.Popen(['symp','-k','-d','cloud_admin','-u','admin','-p','R@ck@tt@ck-123','node','list','-c','name','--quiet'], stdout=subprocess.PIPE)
-# symproc2 = subprocess.Popen(['awk','''{print $2}'''], stdin=symproc1.stdout, stdout=subprocess.PIPE)
-# symproc3 = subprocess.Popen(['grep','-v','name'], stdin=symproc2.stdout, stdout=subprocess.PIPE)
-# symproc1.stdout.close()
-# symproc2.stdout.close()
-# nodes, err1 = symproc3.communicate()
-# rc1 = symproc3.returncode
-# if rc1 != 0:
-#     exit(err1)
-# nodes = nodes.lstrip('\n').rstrip('\n')
-# nodes = nodes.splitlines()
-
-## ipmitool sdr list all
-## ipmitool sdr list event
-## ipmitool sensor [get]
-## ipmitool sdr [get]
-
 subprocess.call('sh {}ipmitool_sdr_temp.sh {}'.format(scriptdirectory, workingdirectory), shell=True)
 # t_sdr = [['node', 'sensor', 'reading', 'status']]
-with open('{}ipmitool_sdr_temp.out'.format(workingdirectory), 'r') as f:
+with open('{}ipmitool_sdr_temp.out'.format(workingdirectory), 'w+') as f:
     for line in itertools.islice(f, 0, None):
         # print(line.split('|')[0].strip().strip('\n'))
         test_data = line.strip().strip('\n')
