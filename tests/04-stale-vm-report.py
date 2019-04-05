@@ -20,6 +20,7 @@
 #   - Initial version                                                                                                  #
 # v1.1 - 05 April 2019 (Richard Raymond)                                                                               #
 #   - Fixed proxy issue when connecting to Symphony using python modules.                                              #
+#   - Updated list of VMs to better handle html format emails.                                                         #
 #                                                                                                                      #
 ########################################################################################################################
 
@@ -78,13 +79,13 @@ client = create_symp_client(symp_url, symp_domain, symp_user, symp_password, sym
 # Get List of active DBs
 test_data = [db for db in client.vms.list() if db['status'] == 'shutoff']
 vms = [[vm['id'], vm['name'], vm['updated']] for vm in test_data]
-error_message = error_message + "\n VM Name".ljust(45) + " VM ID".ljust(50) + " Last Modified".ljust(30)
-error_message = error_message + "\n  ----- ".ljust(45) + "  --- ".ljust(50) + "  ----------- ".ljust(30)
+error_message = error_message + "\n Last Modified".ljust(35) + "  VM ID".ljust(50) + "  VM Name".ljust(30)
+error_message = error_message + "\n  ----------- ".ljust(35) + "   --- ".ljust(50) + "   ----- ".ljust(30)
 for vm in vms:
     time = datetime.strptime(str(vm[2]), '%Y-%m-%dT%H:%M:%SZ')
     time_between_insertion = datetime.now() - time
     if time_between_insertion.days > 30:
-        error_message = error_message + "\n " + str(vm[1]).ljust(45) + str(vm[0]).ljust(50) + str(time).ljust(30)
+        error_message = error_message + "\n " + str(time).ljust(35) + str(vm[0]).ljust(50) + str(vm[1]).ljust(30)
 if len(error_message) < 1:
     result = 0
 # import ipdb; ipdb.set_trace()
