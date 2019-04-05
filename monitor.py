@@ -77,6 +77,8 @@ statusfile.close()
 
 # RUN THROUGH ALL TESTS
 tests = os.listdir(testdirectory)  # Get the list of scripts in tests folder
+tests.sort()
+
 for test in tests:  # For each script DO
     print("Running Test ------> " + str(test))
     subprocess.call(['python', testdirectory + test, test[:-3], rootpath, reportfilename])  # Run the test script
