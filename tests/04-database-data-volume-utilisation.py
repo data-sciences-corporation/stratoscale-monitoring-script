@@ -19,6 +19,8 @@
 # v1.0 - 29 March 2019 (Richard Raymond)                                                                               #
 #   - Initial version                                                                                                  #
 #       Source: 00-template.py [0.4] - Requires: monitor.py [v0.5]                                                     #
+# v1.1 - 05 April 2019 (Richard Raymond)                                                                               #
+#   - Fixed proxy issue when connecting to Symphony using python modules.                                              #
 #                                                                                                                      #
 ########################################################################################################################
 
@@ -32,6 +34,8 @@ import re
 # DEFINITIONS
 def create_symp_client(i_url, i_domain, i_username, i_password, i_project, i_insecure, i_cert_file=None):
     my_session = requests.Session()
+    # disable Proxy
+    my_session.trust_env = False
     if i_insecure is True:
         my_session.verify = False
     elif i_cert_file is not None:
