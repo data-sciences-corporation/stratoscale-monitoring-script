@@ -70,7 +70,7 @@ nodelist = nodelist.rstrip().split("\n")
 worstcase = 0
 # Test node log space capacities for each node.
 for node in nodelist:
-    print(node)
+    #print(node)
     nodename = re.search('.+?(?=:\d*\d%)', node).group(0)
     space = re.search("\d*\d(?=%)", node).group(0)
     if int(space) > 90:
