@@ -87,7 +87,7 @@ connected_vms = [vm for vm in vm_ids if vm in gcm_vms]
 # Get capacity for each connected DB VM
 worstcase = 0
 for vm_id in connected_vms:
-    # Collect data volume informatione
+    # Collect data volume information
     return_result = client.gcm.guest.run(str(vm_id), 'cmd.run', args='df -h --output=size,pcent,target /dev/vdb')['ret']
     # Update the test data variable
     test_data = test_data + "------ VM" + str(vm_id) + "------\n" + str(return_result) + "\n"
@@ -130,3 +130,4 @@ if current_status < result:
     statusfile = open(rootpath + "/currentstatus", "w")
     statusfile.truncate(0)
     statusfile.write(str(result))
+    statusfile.close()

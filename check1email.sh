@@ -1,6 +1,6 @@
-#/!bin/bash
+#!/bin/bash
 status="$(cat currentstatus)"
-if [ "$status" == "1" ]
+if [[ "$status" == "1" ]]
 then
-	python /root/tmp/StratoMonitor/sendtheemail.py
+	python /root/StratoMonitor/sendtheemail.py
 fi

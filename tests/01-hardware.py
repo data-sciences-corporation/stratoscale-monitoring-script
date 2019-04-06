@@ -90,3 +90,4 @@ if current_status < result:
     statusfile = open(rootpath + "/currentstatus", "w")
     statusfile.truncate(0)
     statusfile.write(str(result))
+    statusfile.close()
