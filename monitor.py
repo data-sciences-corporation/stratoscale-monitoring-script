@@ -111,12 +111,14 @@ statusfile = open(rootpath + "/workingstatus", "r")
 new_status = int(statusfile.read())
 statusfile.close()
 # UPDATE THE TEST RESULTS TO THE CURRENT STATUS FILE
+#print("NEW STATUS IS:" + str(new_status))
 statusfile = open(rootpath + "/currentstatus", "w")
 statusfile.truncate(0)
 statusfile.write(str(new_status))
 statusfile.close()
 
-# IF THE STATUS IS DETERIORATED, SEND A MAIL
-if int(new_status) > int(previous_status):
+# IF THE STATUS IS CHANGED, SEND A MAIL
+if int(new_status) != int(previous_status):
     subprocess.call(['python', rootpath + "/sendtheemail.py"])
-    print("Severity has increased.\n------> Sending E-Mail")
+    print("Severity has changed.\n------> Sending E-Mail")
+
