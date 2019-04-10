@@ -19,8 +19,8 @@
 # v1.0 - 29 March 2019 (Richard Raymond)                                                                               #
 #   - Initial version                                                                                                  #
 #       Source: 00-template.py [0.4] - Requires: monitor.py [v0.5]                                                     #
-# v1.1 - 05 April 2019 (Richard Raymond)                                                                               #
-#   - Fixed proxy issue when connecting to Symphony using python modules.                                              #
+# v1.1 - 10 April 2019 (Richard Raymond)                                                                               #
+#   - Several bug fixes                                                                                                #
 #                                                                                                                      #
 ########################################################################################################################
 
@@ -30,6 +30,7 @@ import yaml
 import requests
 import symphony_client
 import re
+
 
 # DEFINITIONS
 def create_symp_client(i_url, i_domain, i_username, i_password, i_project, i_insecure, i_cert_file=None):
@@ -45,6 +46,7 @@ def create_symp_client(i_url, i_domain, i_username, i_password, i_project, i_ins
                      project=i_project)
     return sympclient
 
+
 # PARAMETERS
 # 1 - Script name, 2 - Root path of calling script, 3 - Report filename
 # CONFIG VARIABLES
@@ -56,13 +58,13 @@ workingdirectory = rootpath + "/" + config['framework']['directory']['working'] 
 scriptdirectory = rootpath + "/" + config['framework']['directory']['script'] + "/"  # Generate dir for sub scripts
 
 # SCRIPT VARIABLES
-result = 0                                                                  # Initialize OK marker
-error_message = "*UPDATE ME*"                                               # Error message to provide overview
-test_data = ""                                                              # Full error contents
+result = 0  # Initialize OK marker
+error_message = "Some VM data volumes are nearly full. Please extend them."  # Error message to provide overview
+test_data = ""  # Full error contents
 
 # scriptfile = scriptdirectory + sys.argv[1] + ".sh"                        # Create a script file
 # ----------------------------------------------------------------------------------------------------------------------
-
+worstcase = 0
 # Connect to Symphony
 symp_domain = config['region']['region1']['sympaccount']
 symp_user = config['region']['region1']['sympusername']
@@ -76,22 +78,31 @@ client = create_symp_client(symp_url, symp_domain, symp_user, symp_password, sym
 # Get List of active DBs
 all_db_data = [db for db in client.dbs.instance.list() if db['status'] == 'Active']
 vm_ids = [db['vm_id'] for db in all_db_data]
-
-# TODO: Get VM names also - vm_ids = [[db['vm_id'], db['name']] for db in all_db_data]
-
-# import ipdb; ipdb.set_trace()
 # Get list of connected VMs
 gcm_vms = client.gcm.guest.list_connected()
-# Get list of DBs with connected VMs
-connected_vms = [vm for vm in vm_ids if vm in gcm_vms]
-# Get capacity for each connected DB VM
-worstcase = 0
-for vm_id in connected_vms:
-    # Collect data volume information
-    return_result = client.gcm.guest.run(str(vm_id), 'cmd.run', args='df -h --output=size,pcent,target /dev/vdb')['ret']
+# import ipdb; ipdb.set_trace()
+count = 1
+for vm_id in vm_ids:
+    sys.stdout.write("\rProcessing VM [" + str(count) + "/" + str(len(vm_ids)) + "]")
+    sys.stdout.flush()
+    count += 1
+    test_data = test_data + ("DEBUG vm_id %s" % vm_id)
+    if vm_id not in gcm_vms:
+        test_data = test_data + ("DEBUG vm_id %s is not connected to GCM" % vm_id)
+        continue
+    try:
+        # Collect data volume information
+        return_result = client.gcm.guest.run(str(vm_id), 'cmd.run', args='df -h --output=size,pcent,target /dev/vdb')[
+            'ret']
+        test_data = test_data + ("DEBUG gcm result %s" % return_result)
+    except requests.exceptions.HTTPError as error:
+        test_data = test_data + ("DEBUG Error")
+        test_data = test_data + str(error)
+        continue
+
     # Update the test data variable
     test_data = test_data + "------ VM" + str(vm_id) + "------\n" + str(return_result) + "\n"
-    # Get the percentage usaed
+    # Get the percentage used
     percent_full = re.search('\d*\d(?=%)', return_result).group(0)
     # Check the percentage used against the threshholds
     if int(percent_full) > 90:
@@ -106,6 +117,7 @@ for vm_id in connected_vms:
     if int(result) < int(worstcase):
         result = worstcase
     worstcase = 0
+print("")
 
 # ----------------------------------------------------------------------------------------------------------------------
 # UPDATE REPORT FILE
@@ -125,7 +137,7 @@ reportfile.close()  # Close report file
 statusfile = open(rootpath + "/currentstatus", "r")
 current_status = int(statusfile.read())
 statusfile.close()
-#import ipdb; ipdb.set_trace()
+# import ipdb; ipdb.set_trace()
 if current_status < result:
     statusfile = open(rootpath + "/currentstatus", "w")
     statusfile.truncate(0)

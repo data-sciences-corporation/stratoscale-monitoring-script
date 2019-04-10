@@ -17,6 +17,9 @@
 # CHANGELOG                                                                                                            #
 # v0.1 - 22 March 2019 (Richard Raymond & Manesh Naransammy)                                                           #
 #   - Initial version                                                                                                  #
+# v1.0 - 10 April 2019 (Richard Raymond)                                                                               #
+#   - Several bug fixes                                                                                                #
+#                                                                                                                      #
 ########################################################################################################################
 
 # MODULES
@@ -45,8 +48,8 @@ regionname = config['region']['region1']['name']  # Pull region name from config
 SUBJECT = "Stratoscale Region: " + regionname  # Create first part of subject line
 SUBJECT = SUBJECT + " - Monitoring Report [" + config['framework']['errortypes'][
     int(status)] + "] ["  # Create second part
-SUBJECT = SUBJECT + str(datetime.datetime.now().strftime("%X")) + "]"
-FROM = regionname + "@stratoscale.com"  # Create from address
+SUBJECT = SUBJECT + (datetime.datetime.now() + datetime.timedelta(0,7200)).strftime("%X") + "]"
+FROM = config['region']['email']['fromaddress']
 text = fullreport  # Add report to email body
 BODY = string.join((  # Join e-mail components for sending
     "From: %s" % FROM,
@@ -58,4 +61,3 @@ BODY = string.join((  # Join e-mail components for sending
 server = smtplib.SMTP(config['region']['email']['server'])              # Connect to email server from config file
 server.sendmail(FROM, config['region']['email']['recipients'], BODY)    # Send email
 server.quit()  # Disconnect from e-mail server
-# Disconnect from e-mail server

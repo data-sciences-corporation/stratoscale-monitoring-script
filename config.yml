@@ -1,16 +1,17 @@
 region:
     region1:
-        name: REGION-NAME
-        ipaddress: IP-ADDRESS
-        cliusername: CLI-USER
-        clirootpassword: CLI-PASSWORD
-        sympaccount: SYMPHONY-CLOUD-ACCOUNT
-        sympusername: SYMPHONY-USERNAME
-        symppassword: SYMPHONY-PASSWORD
+        name: 'REGION-NAME'
+        ipaddress: 'REGION-IP-ADDRESS'
+        cliusername: CLIUSER
+        clirootpassword: CLIPASSWORD
+        sympaccount: 'SYMPHONY-ADMIN-ACCOUNT'
+        sympusername: 'SYMPHONY-USER-NAME'
+        symppassword: 'SYMPHONY-USER-PASSWORD'
     email:
-        server: 'SERVER-FQDN'
-        recipients: ['PERSON01@DOMAIN.COM','PERSON02@DOMAIN.COM','PERSON03@DOMAIN.COM']
-        port: 'MAIL-SERVER-PORT'
+        server: 'E-MAIL-SERVER'
+        recipients: ['recipient01@domain.com','recipient02@domain.com','recipient03@domain.com']
+        port: '25'
+        fromaddress: 'senderaddress@domain.com'
         user: "username"
         password: "password"
 framework:
@@ -26,5 +27,6 @@ framework:
         2: ERROR
         3: CRITICAL
         4: UNDEFINED
+        5: INFORMATION
     formatting:
         linebreak: '---------------------------------------------------------------------------------------------------'

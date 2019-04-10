@@ -21,6 +21,8 @@
 # v1.1 - 05 April 2019 (Richard Raymond)                                                                               #
 #   - Fixed proxy issue when connecting to Symphony using python modules.                                              #
 #   - Updated list of VMs to better handle html format emails.                                                         #
+# v1.2 - 10 April 2019 (Richard Raymond)                                                                               #
+#   - Several bug fixes                                                                                                #
 #                                                                                                                      #
 ########################################################################################################################
 
@@ -59,7 +61,7 @@ workingdirectory = rootpath + "/" + config['framework']['directory']['working'] 
 scriptdirectory = rootpath + "/" + config['framework']['directory']['script'] + "/"  # Generate dir for sub scripts
 
 # SCRIPT VARIABLES
-result = 1  # Initialize WARN (this test does not fail)
+result = 0  # Initialize result to healthy
 error_message = "VM/s could possibly be cleaned."  # Error message to provide overview
 test_data = ""  # Full error contents
 
@@ -79,17 +81,15 @@ client = create_symp_client(symp_url, symp_domain, symp_user, symp_password, sym
 # Get List of active DBs
 test_data = [db for db in client.vms.list() if db['status'] == 'shutoff']
 vms = [[vm['id'], vm['name'], vm['updated']] for vm in test_data]
-error_message = error_message + "\n Last Modified".ljust(35) + "  VM ID".ljust(50) + "  VM Name".ljust(30)
-error_message = error_message + "\n  ----------- ".ljust(35) + "   --- ".ljust(50) + "   ----- ".ljust(30)
+test_data = "\n Last Modified".ljust(35) + "  VM ID".ljust(50) + "  VM Name".ljust(30)
+test_data = test_data + "\n  ----------- ".ljust(35) + "   --- ".ljust(50) + "   ----- ".ljust(30)
 for vm in vms:
     time = datetime.strptime(str(vm[2]), '%Y-%m-%dT%H:%M:%SZ')
     time_between_insertion = datetime.now() - time
     if time_between_insertion.days > 30:
-        error_message = error_message + "\n " + str(time).ljust(35) + str(vm[0]).ljust(50) + str(vm[1]).ljust(30)
-if len(error_message) < 1:
-    result = 0
+        test_data = test_data + "\n " + str(time).ljust(35) + str(vm[0]).ljust(50) + str(vm[1]).ljust(30)
+        result = 5 #Set status to informational, as there is a VM to clean
 # import ipdb; ipdb.set_trace()
-
 test_data = str(test_data)
 # ----------------------------------------------------------------------------------------------------------------------
 # UPDATE REPORT FILE
@@ -106,12 +106,12 @@ if result != 0:  # Check if test wasn't successful
 reportfile.write('\n' + config['framework']['formatting']['linebreak'] + '\n')  # Add line break to report file per test
 reportfile.close()  # Close report file
 # ADD CURRENT TEST RESULT TO OVERALL REPORT STATUS
-statusfile = open(rootpath + "/currentstatus", "r")
-current_status = int(statusfile.read())
-statusfile.close()
+#statusfile = open(rootpath + "/currentstatus", "r")
+#current_status = int(statusfile.read())
+#statusfile.close()
 #import ipdb; ipdb.set_trace()
-if current_status < result:
-    statusfile = open(rootpath + "/currentstatus", "w")
-    statusfile.truncate(0)
-    statusfile.write(str(result))
-    statusfile.close()
+#if current_status < result:
+#    statusfile = open(rootpath + "/currentstatus", "w")
+#    statusfile.truncate(0)
+#    statusfile.write(str(result))
+#    statusfile.close()

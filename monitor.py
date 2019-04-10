@@ -33,6 +33,8 @@
 # v0.5 - 22 March 2019 (Richard Raymond)                                                                               #
 #   - Improving e-mail granularity by adding a file to read on e-mail check                                            #
 #   - Clean up report files                                                                                            #
+# v1.0 - 10 April 2019 (Richard Raymond)                                                                               #
+#   - Several bug fixes                                                                                                #
 #                                                                                                                      #
 ########################################################################################################################
 

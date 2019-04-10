@@ -22,6 +22,8 @@
 # v1.1 - 22 March 2019 (Richard Raymond)                                                                               #
 #   Source: 00-template.py [v0.4] - Requires: monitor.py [v0.5]                                                        #
 #   - Updated script to use latest template (adds improved e-mail granularity), no changes to test code.               #
+# v1.2 - 10 April 2019 (Richard Raymond)                                                                               #
+#   - Several bug fixes                                                                                                #
 #                                                                                                                      #
 ########################################################################################################################
 
