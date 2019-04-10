@@ -80,12 +80,12 @@ if result != 0:                                                             # Ch
 reportfile.write('\n' + config['framework']['formatting']['linebreak'] + '\n')  # Add line break to report file per test
 reportfile.close()                                                          # Close report file
 # ADD CURRENT TEST RESULT TO OVERALL REPORT STATUS
-statusfile = open(rootpath + "/currentstatus", "r")
+statusfile = open(rootpath + "/workingstatus", "r")
 current_status = int(statusfile.read())
 statusfile.close()
 #import ipdb; ipdb.set_trace()
 if current_status < result:
-    statusfile = open(rootpath + "/currentstatus", "w")
+    statusfile = open(rootpath + "/workingstatus", "w")
     statusfile.truncate(0)
     statusfile.write(str(result))
     statusfile.close()

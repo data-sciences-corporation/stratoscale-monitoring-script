@@ -52,18 +52,14 @@ test_data = ""                                                   # Full error co
 # TEST SCRIPT DATA GOES HERE
 
 subprocess.call('sh {}ipmitool_sdr_temp.sh {}'.format(scriptdirectory, workingdirectory), shell=True)
-# t_sdr = [['node', 'sensor', 'reading', 'status']]
 with open('{}ipmitool_sdr_temp.out'.format(workingdirectory), 'w+') as f:
     for line in itertools.islice(f, 0, None):
-        # print(line.split('|')[0].strip().strip('\n'))
         test_data = line.strip().strip('\n')
         if line.split('|')[3].strip().strip('\n') != 'ok':
-            # print(line.strip().strip('\n'))
             result = 3
             error_message += line.strip().strip('\n')
         else:
             result = 0
-        # t_sdr.append(line.split('|'))
 f.close()
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -82,12 +78,12 @@ reportfile.write('\n' + config['framework']['formatting']['linebreak'] + '\n')  
 reportfile.close()
 # ----------------------------------------------------------------------------------------------------------------------
 # ADD CURRENT TEST RESULT TO OVERALL REPORT STATUS
-statusfile = open(rootpath + "/currentstatus", "r")
+statusfile = open(rootpath + "/workingstatus", "r")
 current_status = int(statusfile.read())
 statusfile.close()
 #import ipdb; ipdb.set_trace()
 if current_status < result:
-    statusfile = open(rootpath + "/currentstatus", "w")
+    statusfile = open(rootpath + "/workingstatus", "w")
     statusfile.truncate(0)
     statusfile.write(str(result))
     statusfile.close()

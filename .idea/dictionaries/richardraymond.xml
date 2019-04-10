@@ -13,6 +13,7 @@
       <w>reportfile</w>
       <w>scriptdirectory</w>
       <w>scriptfile</w>
+      <w>sendtheemail</w>
       <w>statusfile</w>
       <w>stratoscale</w>
       <w>sympclient</w>

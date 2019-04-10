@@ -33,8 +33,6 @@
 # v0.5 - 22 March 2019 (Richard Raymond)                                                                               #
 #   - Improving e-mail granularity by adding a file to read on e-mail check                                            #
 #   - Clean up report files                                                                                            #
-# v1.0 - 10 April 2019 (Richard Raymond)                                                                               #
-#   - Several bug fixes                                                                                                #
 #                                                                                                                      #
 ########################################################################################################################
 
@@ -65,13 +63,16 @@ reportfile = open(reportdirectory + reportfilename + '.txt', "w+")  # Creacat st
 reportfile.write('\nSTATUS REPORT [' + config['region']['region1']['name'] + ']\n')
 reportfile.write(config['framework']['formatting']['linebreak'] + '\n')
 reportfile.close()  # Close the report file for later editing.if int(statusfile.read()) < result:
-statusfile = open(rootpath + "/currentstatus", "w")
-statusfile.write('0')
-statusfile.close()
 
-# CLEAR DATA IN CURRENT STATUS FILE
-statusfile = open(rootpath + "/currentstatus", "w")
-statusfile.write('0')
+# READ PREVIOUS TEST STATUS
+statusfile = open(rootpath + "/currentstatus", "r")
+previous_status = int(statusfile.read())
+statusfile.close()
+# CLEAR THE NEW TEST STATUS
+#print ("PREV STATUS: " + str(previous_status))
+statusfile = open(rootpath + "/workingstatus", "w")
+statusfile.truncate(0)
+statusfile.write("0")
 statusfile.close()
 
 # RUN THROUGH ALL TESTS
@@ -104,3 +105,18 @@ if count > int(config['framework']['directory']['reportcount']):  # Check if mor
     list = list[0:(len(list) - int(config['framework']['directory']['reportcount']))]
     for dfile in list:
         os.remove(reportdirectory + dfile)
+
+# GET THE RESULTS OF THE TEST FROM THE WORKING STATUS
+statusfile = open(rootpath + "/workingstatus", "r")
+new_status = int(statusfile.read())
+statusfile.close()
+# UPDATE THE TEST RESULTS TO THE CURRENT STATUS FILE
+statusfile = open(rootpath + "/currentstatus", "w")
+statusfile.truncate(0)
+statusfile.write(str(new_status))
+statusfile.close()
+
+# IF THE STATUS IS DETERIORATED, SEND A MAIL
+if int(new_status) > int(previous_status):
+    subprocess.call(['python', rootpath + "/sendtheemail.py"])
+    print("Severity has increased.\n------> Sending E-Mail")

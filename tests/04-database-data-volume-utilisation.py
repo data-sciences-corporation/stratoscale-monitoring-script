@@ -83,7 +83,7 @@ gcm_vms = client.gcm.guest.list_connected()
 # import ipdb; ipdb.set_trace()
 count = 1
 for vm_id in vm_ids:
-    sys.stdout.write("\rProcessing VM [" + str(count) + "/" + str(len(vm_ids)) + "]")
+    sys.stdout.write("\r\tProcessing VM [" + str(count) + "/" + str(len(vm_ids)) + "]")
     sys.stdout.flush()
     count += 1
     test_data = test_data + ("DEBUG vm_id %s" % vm_id)
@@ -134,12 +134,12 @@ if result != 0:  # Check if test wasn't successful
 reportfile.write('\n' + config['framework']['formatting']['linebreak'] + '\n')  # Add line break to report file per test
 reportfile.close()  # Close report file
 # ADD CURRENT TEST RESULT TO OVERALL REPORT STATUS
-statusfile = open(rootpath + "/currentstatus", "r")
+statusfile = open(rootpath + "/workingstatus", "r")
 current_status = int(statusfile.read())
 statusfile.close()
 # import ipdb; ipdb.set_trace()
 if current_status < result:
-    statusfile = open(rootpath + "/currentstatus", "w")
+    statusfile = open(rootpath + "/workingstatus", "w")
     statusfile.truncate(0)
     statusfile.write(str(result))
     statusfile.close()
