@@ -58,7 +58,7 @@ scriptfile = scriptdirectory + sys.argv[1] + ".sh"                          # Cr
 
 # Make a bash script
 bashscript = open(scriptfile, "w+")
-bashscript.write("#!/bin/bash\nconsul exec df -h | grep dev | awk {\'print $1 $6\'}")
+bashscript.write("#!/bin/bash\nconsul exec 'df -h' | grep '% /' | grep -v ' %'")
 bashscript.close()
 
 # Allow execute access
@@ -71,10 +71,13 @@ nodelist = nodelist.rstrip().split("\n")
 
 worstcase = 0
 # Test node log space capacities for each node.
+#import ipdb; ipdb.set_trace()
 for node in nodelist:
     #print(node)
-    nodename = re.search('.+?(?=:\d*\d%)', node).group(0)
-    space = re.search("\d*\d(?=%)", node).group(0)
+    nodename = re.search('(?=[^ ]).*?(?=:)', node).group(0)
+    space = re.search('\d*(?=%)', node).group(0)
+    #print("name = " + str(nodename))
+    #print("space = " + str(space))
     if int(space) > 90:
             worstcase = 3
             error_message = error_message + "\n CRITICAL: " + nodename + " - " + space + "% full"
