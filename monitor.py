@@ -120,5 +120,5 @@ statusfile.close()
 # IF THE STATUS IS CHANGED, SEND A MAIL
 if int(new_status) != int(previous_status):
     subprocess.call(['python', rootpath + "/sendtheemail.py"])
-    print("Severity has changed.\n------> Sending E-Mail")
+    print("Severity has changed. ------> Sending E-Mail")
 
