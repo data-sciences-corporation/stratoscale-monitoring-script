@@ -10,6 +10,7 @@
       <w>fullreport</w>
       <w>latestreport</w>
       <w>regionname</w>
+      <w>reportdirectory</w>
       <w>reportfile</w>
       <w>scriptdirectory</w>
       <w>scriptfile</w>
@@ -17,6 +18,8 @@
       <w>statusfile</w>
       <w>stratoscale</w>
       <w>sympclient</w>
+      <w>testdirectory</w>
+      <w>workingdirectory</w>
     </words>
   </dictionary>
 </component>

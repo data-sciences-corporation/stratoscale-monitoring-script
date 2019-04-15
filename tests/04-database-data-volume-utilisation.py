@@ -62,7 +62,7 @@ result = 0  # Initialize OK marker
 error_message = "Some VM data volumes are nearly full. Please extend them."  # Error message to provide overview
 test_data = ""  # Full error contents
 
-# scriptfile = scriptdirectory + sys.argv[1] + ".sh"                        # Create a script file
+# README.txt = scriptdirectory + sys.argv[1] + ".sh"                        # Create a script file
 # ----------------------------------------------------------------------------------------------------------------------
 worstcase = 0
 # Connect to Symphony

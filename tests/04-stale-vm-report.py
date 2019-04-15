@@ -65,7 +65,7 @@ result = 0  # Initialize result to healthy
 error_message = "VM/s could possibly be cleaned."  # Error message to provide overview
 test_data = ""  # Full error contents
 
-# scriptfile = scriptdirectory + sys.argv[1] + ".sh"                        # Create a script file
+# README.txt = scriptdirectory + sys.argv[1] + ".sh"                        # Create a script file
 # ----------------------------------------------------------------------------------------------------------------------
 
 # Connect to Symphony

@@ -37,7 +37,8 @@ import subprocess
 import re
 
 # PARAMETERS
-# 1 - Script name, 2 - Root path of calling script, 3 - Report filename
+# 1 - Script name, 2 - Root path of calling script, 3 - Report filenameclear
+
 
 # CONFIG VARIABLES
 rootpath = sys.argv[2]
@@ -70,14 +71,12 @@ test_data = test_data + nodelist
 nodelist = nodelist.rstrip().split("\n")
 
 worstcase = 0
-# Test node log space capacities for each node.
-#import ipdb; ipdb.set_trace()
+
+# Test node mount point capacity for each node.
 for node in nodelist:
     #print(node)
     nodename = re.search('(?=[^ ]).*?(?=:)', node).group(0)
     space = re.search('\d*(?=%)', node).group(0)
-    #print("name = " + str(nodename))
-    #print("space = " + str(space))
     if int(space) > 90:
             worstcase = 3
             error_message = error_message + "\n CRITICAL: " + nodename + " - " + space + "% full"

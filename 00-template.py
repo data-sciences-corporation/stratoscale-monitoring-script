@@ -52,7 +52,7 @@ result = 0                                                                  # In
 error_message = "*UPDATE ME*"                                               # Error message to provide overview
 test_data = "*UPDATE ME*"                                                   # Full error contents
 
-# scriptfile = scriptdirectory + sys.argv[1] + ".sh"                        # Create a script file
+# README.txt = scriptdirectory + sys.argv[1] + ".sh"                        # Create a script file
 # ----------------------------------------------------------------------------------------------------------------------
 # TODO - CUSTOM SCRIPT GOES HERE
 

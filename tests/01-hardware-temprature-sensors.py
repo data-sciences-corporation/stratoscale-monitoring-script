@@ -26,10 +26,10 @@
 ########################################################################################################################
 
 # MODULES
+import os
 import sys
 import yaml
 import subprocess
-import itertools
 
 # PARAMETERS
 # 1 - Script name, 2 - Root path of calling script, 3 - Report filename
@@ -43,24 +43,35 @@ workingdirectory = rootpath + "/" + config['framework']['directory']['working'] 
 scriptdirectory = rootpath + "/" + config['framework']['directory']['script'] + "/"    # Generate dir for sub scripts
 
 # SCRIPT VARIABLES
-result = 4                                                                  # Initialize OK/NOK marker
-error_message = ""                                               # Error message to provide overview
-test_data = ""                                                   # Full error contents
+result = 0                                                                              # Initialize OK
+error_message = ""                                                                  # Error message to provide overview
+test_data = ""                                                                          # Full error contents
 
-# scriptfile = scriptdirectory + sys.argv[1] + ".sh"                        # Create a script file
+scriptfile = scriptdirectory + sys.argv[1] + ".sh"                                      # Create a script file
 # ----------------------------------------------------------------------------------------------------------------------
 # TEST SCRIPT DATA GOES HERE
 
-subprocess.call('sh {}ipmitool_sdr_temp.sh {}'.format(scriptdirectory, workingdirectory), shell=True)
-with open('{}ipmitool_sdr_temp.out'.format(workingdirectory), 'w+') as f:
-    for line in itertools.islice(f, 0, None):
-        test_data = line.strip().strip('\n')
-        if line.split('|')[3].strip().strip('\n') != 'ok':
-            result = 3
-            error_message += line.strip().strip('\n')
-        else:
-            result = 0
-f.close()
+# Make a bash script
+bashscript = open(scriptfile, "w+")
+bashscript.write("#!/bin/bash\n")
+bashscript.write("consul exec ipmitool sdr list | grep degrees | awk '{gsub(\":\",\"|\"); print}'")
+bashscript.close()
+
+# Allow execute access
+os.chmod(scriptfile, 0o755)                                                 # Force octal data type
+process = subprocess.Popen(scriptfile, stdout=subprocess.PIPE)
+test_data, error = process.communicate()
+
+components = test_data.rstrip().split("\n")
+
+for component in components:
+    component = component.split("|")
+    #import ipdb; ipdb.set_trace()
+    if str(component[3]).strip() == "ok":
+        print("Part OK")
+
+# Delete bash script file
+os.remove(scriptfile)
 
 # ----------------------------------------------------------------------------------------------------------------------
 # UPDATE REPORT FILE
