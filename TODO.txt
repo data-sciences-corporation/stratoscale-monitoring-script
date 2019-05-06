@@ -17,3 +17,5 @@ General
 04-stale-vm-report
 	- move list to file [DONE]
 	- INFO state [DONE]
+
+check UI is available

@@ -77,7 +77,7 @@ test_data = test_data + output
 for i in range(len(response_yaml)):
     if response_yaml[i]['state'] != "active":
         result = 3
-        error_message = error_message + '\t' + str(response_yaml[i]['name']) + 'is in state [' + str(response_yaml[i]['state'])
+        error_message = error_message + '\t' + str(response_yaml[i]['name']) + ' is in state [' + str(response_yaml[i]['state'])
         error_message = error_message + '] - ' + str(response_yaml[i]['state_fail_reasons']) + '\n'
 
 # Delete bash script file

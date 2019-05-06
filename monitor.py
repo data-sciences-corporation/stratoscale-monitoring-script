@@ -52,7 +52,7 @@ testdirectory = rootpath + "/" + config['framework']['directory']['test'] + "/" 
 reportdirectory = rootpath + "/" + config['framework']['directory']['report'] + "/"  # Generate dir string for reports
 
 # SPLASH SCREEN
-print(sys.path)
+#print(sys.path)
 print('STRATOSCALE - QUICK MONITORMONITOR')
 
 # CREATE SESSION REPORT FILE
@@ -69,7 +69,6 @@ statusfile = open(rootpath + "/currentstatus", "r")
 previous_status = int(statusfile.read())
 statusfile.close()
 # CLEAR THE NEW TEST STATUS
-#print ("PREV STATUS: " + str(previous_status))
 statusfile = open(rootpath + "/workingstatus", "w")
 statusfile.truncate(0)
 statusfile.write("0")
