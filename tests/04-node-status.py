@@ -79,6 +79,11 @@ for i in range(len(response_yaml)):
         result = 3
         error_message = error_message + '\t' + str(response_yaml[i]['name']) + ' is in state [' + str(response_yaml[i]['state'])
         error_message = error_message + '] - ' + str(response_yaml[i]['state_fail_reasons']) + '\n'
+        #Sh*tty hack, because it's father's day.
+    if response_yaml[i]['state'] == "in_maintenance":
+        result = 1  # Set alert to warning
+        error_message = error_message + '\t' + str(response_yaml[i]['name']) + ' is in state [' + str(response_yaml[i]['state'])
+        error_message = error_message + '] - ' + str(response_yaml[i]['state_fail_reasons']) + '\n'
 
 # Delete bash script file
 os.remove(scriptfile)

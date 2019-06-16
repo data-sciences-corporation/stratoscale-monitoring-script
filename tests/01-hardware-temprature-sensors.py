@@ -44,8 +44,8 @@ scriptdirectory = rootpath + "/" + config['framework']['directory']['script'] + 
 
 # SCRIPT VARIABLES
 result = 0                                                                              # Initialize OK
-error_message = ""                                                                  # Error message to provide overview
-test_data = ""                                                                          # Full error contents
+error_message = ""                                                                   # Error message to provide overview
+# test_data = ""                                                                          # Full error contents
 
 scriptfile = scriptdirectory + sys.argv[1] + ".sh"                                      # Create a script file
 # ----------------------------------------------------------------------------------------------------------------------
