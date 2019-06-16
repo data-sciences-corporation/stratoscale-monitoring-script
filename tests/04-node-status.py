@@ -24,6 +24,8 @@
 #   - Updated script to use latest template (adds improved e-mail granularity), no changes to test code.               #
 # v1.2 - 10 April 2019 (Richard Raymond)                                                                               #
 #   - Several bug fixes                                                                                                #
+# v1.3 - 17 June 2019 (Richard Raymond)                                                                                #
+#   - Added node maintenance mode support                                                                              #
 #                                                                                                                      #
 ########################################################################################################################
 
@@ -76,12 +78,11 @@ test_data = test_data + output
 # Iterate through node list and check status
 for i in range(len(response_yaml)):
     if response_yaml[i]['state'] != "active":
-        result = 3
-        error_message = error_message + '\t' + str(response_yaml[i]['name']) + ' is in state [' + str(response_yaml[i]['state'])
-        error_message = error_message + '] - ' + str(response_yaml[i]['state_fail_reasons']) + '\n'
-        #Sh*tty hack, because it's father's day.
-    if response_yaml[i]['state'] == "in_maintenance":
-        result = 1  # Set alert to warning
+        if result < 1:
+            if response_yaml[i]['state'] == "in_maintenance":
+                result = 1
+            else:
+                result = 3
         error_message = error_message + '\t' + str(response_yaml[i]['name']) + ' is in state [' + str(response_yaml[i]['state'])
         error_message = error_message + '] - ' + str(response_yaml[i]['state_fail_reasons']) + '\n'
 
