@@ -26,6 +26,8 @@
 #   - Updated script to use latest template (adds improved e-mail granularity), no changes to test code.               #
 # v1.3 - 10 April 2019 (Richard Raymond)                                                                               #
 #   - Several bug fixes                                                                                                #
+# v1.4 - 27 June 2019 (Richard Raymond)                                                                               #
+#   - Added actual mount point info to report                                                                         #
 #                                                                                                                      #
 ########################################################################################################################
 
@@ -37,8 +39,7 @@ import subprocess
 import re
 
 # PARAMETERS
-# 1 - Script name, 2 - Root path of calling script, 3 - Report filenameclear
-
+# 1 - Script name, 2 - Root path of calling script, 3 - Report filename
 
 # CONFIG VARIABLES
 rootpath = sys.argv[2]
@@ -71,21 +72,26 @@ test_data = test_data + nodelist
 nodelist = nodelist.rstrip().split("\n")
 
 worstcase = 0
-
-# Test node mount point capacity for each node.
+# Test node log space capacities for each node.
+#import ipdb; ipdb.set_trace()
 for node in nodelist:
     #print(node)
     nodename = re.search('(?=[^ ]).*?(?=:)', node).group(0)
     space = re.search('\d*(?=%)', node).group(0)
+    #print("name = " + str(nodename))
+    #print("space = " + str(space))
     if int(space) > 90:
             worstcase = 3
             error_message = error_message + "\n CRITICAL: " + nodename + " - " + space + "% full"
+            error_message = error_message + "\n\t" + node
     elif int(space) > 85:
             worstcase = 2
             error_message = error_message + "\n ERROR: " + nodename + " - " + space + "% full"
+            error_message = error_message + "\n\t" + node
     elif int(space) > 75:
             worstcase = 1
             error_message = error_message + "\n WARNING: " + nodename + " - " + space + "% full"
+            error_message = error_message + "\n\t" + node
     if int(result) < int(worstcase):
             result = worstcase
     worstcase = 0
@@ -117,3 +123,4 @@ if current_status < result:
     statusfile.truncate(0)
     statusfile.write(str(result))
     statusfile.close()
+
