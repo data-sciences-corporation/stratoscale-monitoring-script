@@ -11,7 +11,7 @@
 # -------------------------------------------------------------------------------------------------------------------- #
 #                                                                                                                      #
 # MODULE DETAILS:                                                                                                      #
-#   This module is for monitor the /logs directory, to check that we are not filling up the logs unnecessarily.        #
+#   This module is for monitor the base OS mount points, to check if any of the mount points are filling up.           #
 #                                                                                                                      #
 # -------------------------------------------------------------------------------------------------------------------- #
 #                                                                                                                      #
@@ -27,7 +27,7 @@
 # v1.3 - 10 April 2019 (Richard Raymond)                                                                               #
 #   - Several bug fixes                                                                                                #
 # v1.4 - 27 June 2019 (Richard Raymond)                                                                                #
-#   - Added actual mount point info to report                                                                          #
+#   - Added actual mount point info to report, so that script caters for all mount points on the base OS, per node.    #
 #                                                                                                                      #
 ########################################################################################################################
 
