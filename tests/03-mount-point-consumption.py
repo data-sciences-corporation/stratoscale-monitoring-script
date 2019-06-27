@@ -75,7 +75,6 @@ worstcase = 0
 # Test node log space capacities for each node.
 #import ipdb; ipdb.set_trace()
 for node in nodelist:
-    #print(node)
     nodename = re.search('(?=[^ ]).*?(?=:)', node).group(0)
     space = re.search('\d*(?=%)', node).group(0)
     if int(space) > 90:
