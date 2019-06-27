@@ -26,8 +26,8 @@
 #   - Updated script to use latest template (adds improved e-mail granularity), no changes to test code.               #
 # v1.3 - 10 April 2019 (Richard Raymond)                                                                               #
 #   - Several bug fixes                                                                                                #
-# v1.4 - 27 June 2019 (Richard Raymond)                                                                               #
-#   - Added actual mount point info to report                                                                         #
+# v1.4 - 27 June 2019 (Richard Raymond)                                                                                #
+#   - Added actual mount point info to report                                                                          #
 #                                                                                                                      #
 ########################################################################################################################
 
