@@ -12,7 +12,7 @@
 #                                                                                                                      #
 # MODULE DETAILS:                                                                                                      #
 #   This module checks the database volume utilisation.                                                                #
-#                                                                                                                      #
+#                                                                   exi                                                   #
 # -------------------------------------------------------------------------------------------------------------------- #
 #                                                                                                                      #
 # CHANGELOG                                                                                                            #
@@ -21,6 +21,8 @@
 #       Source: 00-template.py [0.4] - Requires: monitor.py [v0.5]                                                     #
 # v1.1 - 10 April 2019 (Richard Raymond)                                                                               #
 #   - Several bug fixes                                                                                                #
+# v1.2 - 21 October 2019 (Richard Raymond)                                                                             #
+#   - Script rewritten to accommodate removal of GCM tool as well as addition of metrics by symp client.               #
 #                                                                                                                      #
 ########################################################################################################################
 
@@ -29,7 +31,6 @@ import sys
 import yaml
 import requests
 import symphony_client
-import re
 
 
 # DEFINITIONS
@@ -59,7 +60,7 @@ scriptdirectory = rootpath + "/" + config['framework']['directory']['script'] + 
 
 # SCRIPT VARIABLES
 result = 0  # Initialize OK marker
-error_message = "Some VM data volumes are nearly full. Please extend them."  # Error message to provide overview
+error_message = "Some DB data volumes are nearly full. Please extend them.\n"  # Error message to provide overview
 test_data = ""  # Full error contents
 
 # README.txt = scriptdirectory + sys.argv[1] + ".sh"                        # Create a script file
@@ -108,10 +109,8 @@ if result < 1:
         elif db.status.lower() == "stopped":
             status = "{}[Stopped]".format(textCol.BLUE)
         else:
-            status = "{}Error".format(textCol.RED)
-        db_details = "-------------------------------------------------------------------------------------------"
-        db_details = ("{}\n [{}] {}{} [{}]{}\n  DB ID {}\t{}{}".format(
-            db_details,
+            status = "{}[Error]".format(textCol.RED)
+        db_details = (" [{}] {}{} [{}]{}\n  DB ID {}\t{}{}\n".format(
             count,
             textCol.BOLD,
             db.name,
@@ -139,18 +138,28 @@ if result < 1:
         except:
             percent_used = "{}[No Data] - ?".format(textCol.YELLOW)
             worstcase = 1
-        capacity_details = "  Data Volume\t\t\t\t\t{}% consumed of the allocated {}GB{}".format(
+        capacity_details = "  Data Volume\t\t\t\t\t{}% consumed of the allocated {}GB{}\n".format(
             percent_used,
             db.allocated_storage,
             textCol.END
         )
-        print(db_details)
-        print(capacity_details)
+        print("{}{}".format(db_details, capacity_details))
         if int(result) < int(worstcase):
             result = worstcase
         test_data = "{}{}{}".format(test_data, db_details, capacity_details)
         if worstcase > 0:
             error_message = "{}{}{}".format(error_message, db_details, capacity_details)
+
+# Clean special characters out of text data
+error_message = error_message.replace(textCol.RED, '')
+error_message = error_message.replace(textCol.GREEN, '')
+error_message = error_message.replace(textCol.YELLOW, '')
+error_message = error_message.replace(textCol.BLUE, '')
+error_message = error_message.replace(textCol.PURPLE, '')
+error_message = error_message.replace(textCol.CYCAN, '')
+error_message = error_message.replace(textCol.END, '')
+error_message = error_message.replace(textCol.BOLD, '')
+error_message = error_message.replace(textCol.UNDERLINE, '')
 
 # ----------------------------------------------------------------------------------------------------------------------
 # UPDATE REPORT FILE

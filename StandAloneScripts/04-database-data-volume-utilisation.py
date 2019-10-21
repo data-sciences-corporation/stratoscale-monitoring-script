@@ -125,3 +125,15 @@ for db in dbs:
     print(db_details)
     print(capacity_details)
 
+
+# In[7]:
+
+
+print db
+
+
+# In[ ]:
+
+
+
+
