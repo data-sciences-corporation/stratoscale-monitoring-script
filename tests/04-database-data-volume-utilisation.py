@@ -73,51 +73,84 @@ symp_project = "default"
 symp_url = "https://" + config['region']['region1']['ipaddress']
 symp_insecure = True
 symp_certfile = "None"
-client = create_symp_client(symp_url, symp_domain, symp_user, symp_password, symp_project, symp_insecure, symp_certfile)
+my_session = requests.Session()
+my_session.verify = False
+try:
+    client = symphony_client.Client(url=symp_url, session=my_session)
+    client_login = client.login(domain=symp_domain, username=symp_user, password=symp_password, project=symp_project)
+except:
+    print("Could not connect to the Stratosacle region [{}]".format(symp_url))
+    error_message = "Could not connect to symphony region."
+    result = 1
+if result < 1:
+    class textCol:
+        RED = '\033[91m'
+        GREEN = '\033[92m'
+        YELLOW = '\033[93m'
+        BLUE = '\033[94m'
+        PURPLE = '\033[95m'
+        CYCAN = '\033[96m'
+        END = '\033[0m'
+        BOLD = '\033[1m'
+        UNDERLINE = '\033[4m'
 
-# Get List of active DBs
-all_db_data = [db for db in client.dbs.instance.list() if db['status'] == 'Active']
-vm_ids = [db['vm_id'] for db in all_db_data]
-# Get list of connected VMs
-gcm_vms = client.gcm.guest.list_connected()
-# import ipdb; ipdb.set_trace()
-count = 1
-for vm_id in vm_ids:
-    sys.stdout.write("\r\tProcessing VM [" + str(count) + "/" + str(len(vm_ids)) + "]")
-    sys.stdout.flush()
-    count += 1
-    test_data = test_data + ("DEBUG vm_id %s" % vm_id)
-    if vm_id not in gcm_vms:
-        test_data = test_data + ("DEBUG vm_id %s is not connected to GCM" % vm_id)
-        continue
-    try:
-        # Collect data volume information
-        return_result = client.gcm.guest.run(str(vm_id), 'cmd.run', args='df -h --output=size,pcent,target /dev/vdb')[
-            'ret']
-        test_data = test_data + ("DEBUG gcm result %s" % return_result)
-    except requests.exceptions.HTTPError as error:
-        test_data = test_data + ("DEBUG Error")
-        test_data = test_data + str(error)
-        continue
-
-    # Update the test data variable
-    test_data = test_data + "------ VM" + str(vm_id) + "------\n" + str(return_result) + "\n"
-    # Get the percentage used
-    percent_full = re.search('\d*\d(?=%)', return_result).group(0)
-    # Check the percentage used against the threshholds
-    if int(percent_full) > 90:
-        worstcase = 3
-        error_message = error_message + "\n CRITICAL: " + vm_id + " - " + percent_full + "% full"
-    elif int(percent_full) > 85:
-        worstcase = 2
-        error_message = error_message + "\n ERROR: " + vm_id + " - " + percent_full + "% full"
-    elif int(percent_full) > 75:
-        worstcase = 1
-        error_message = error_message + "\n WARNING: " + vm_id + " - " + percent_full + "% full"
-    if int(result) < int(worstcase):
-        result = worstcase
-    worstcase = 0
-print("")
+    dbs = client.dbs.instance.list()
+    count = 0
+    for db in dbs:
+        worstcase = 0
+        count = count + 1
+        if db.status.lower() == "active":
+            status = "{}[Active]".format(textCol.GREEN)
+        elif db.status.lower() == "pending":
+            status = "{}[Pending]".format(textCol.PURPLE)
+        elif db.status.lower() == "processing":
+            status = "{}[Processing]".format(textCol.CYCAN)
+        elif db.status.lower() == "stopped":
+            status = "{}[Stopped]".format(textCol.BLUE)
+        else:
+            status = "{}Error".format(textCol.RED)
+        db_details = "-------------------------------------------------------------------------------------------"
+        db_details = ("{}\n [{}] {}{} [{}]{}\n  DB ID {}\t{}{}".format(
+            db_details,
+            count,
+            textCol.BOLD,
+            db.name,
+            db.floating_ip,
+            textCol.END,
+            db.id,
+            status,
+            textCol.END
+        ))
+        db_data = client.dbs.instance.get(db.id)
+        try:
+            percent_used = 100 - int(db_data.stats.get("df/percent_bytes__free"))
+            if percent_used > 85:
+                percent_used = "{}{}[CRITICAL] - {}".format(textCol.BOLD, textCol.RED, percent_used)
+                worstcase = 3
+            elif percent_used > 80:
+                percent_used = "{}[ERROR] - {}".format(textCol.PURPLE, percent_used)
+                worstcase = 2
+            elif percent_used > 70:
+                percent_used = "{}[WARNING] - {}".format(textCol.YELLOW, percent_used)
+                worstcase = 1
+            else:
+                percent_used = "{}[OK] - {}".format(textCol.GREEN, percent_used)
+                worstcase = 0
+        except:
+            percent_used = "{}[No Data] - ?".format(textCol.YELLOW)
+            worstcase = 1
+        capacity_details = "  Data Volume\t\t\t\t\t{}% consumed of the allocated {}GB{}".format(
+            percent_used,
+            db.allocated_storage,
+            textCol.END
+        )
+        print(db_details)
+        print(capacity_details)
+        if int(result) < int(worstcase):
+            result = worstcase
+        test_data = "{}{}{}".format(test_data, db_details, capacity_details)
+        if worstcase > 0:
+            error_message = "{}{}{}".format(error_message, db_details, capacity_details)
 
 # ----------------------------------------------------------------------------------------------------------------------
 # UPDATE REPORT FILE

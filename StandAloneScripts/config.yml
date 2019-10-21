@@ -1,0 +1,6 @@
+region_access:
+  ipaddress: 'stratoscale_region_ip'
+  cloud_domain: 'tenant/project'
+  cloud_user: 'username'
+  cloud_password: 'users_stratoscale_password'
+  project: 'project_to_analyse(default_for_full_admin)'

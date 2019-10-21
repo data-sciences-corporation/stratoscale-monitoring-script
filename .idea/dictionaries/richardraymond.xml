@@ -21,6 +21,7 @@
       <w>sympclient</w>
       <w>testdirectory</w>
       <w>workingdirectory</w>
+      <w>worstcase</w>
     </words>
   </dictionary>
 </component>
