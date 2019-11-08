@@ -68,6 +68,7 @@ for component in components:
     component = component.split("|")
     #import ipdb; ipdb.set_trace()
     if str(component[3]).strip() == "ok":
+        part_temp = "{}{}".format()
         print("Part OK")
 
 # Delete bash script file

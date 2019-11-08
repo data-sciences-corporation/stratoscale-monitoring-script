@@ -1,6 +1,9 @@
 region_access:
-  ipaddress: 'stratoscale_region_ip'
-  cloud_domain: 'tenant/project'
-  cloud_user: 'username'
-  cloud_password: 'users_stratoscale_password'
-  project: 'project_to_analyse(default_for_full_admin)'
+  ipaddress: '192.168.101.100'
+  cloud_domain: 'cloud_admin'
+  cloud_user: 'admin'
+  cloud_password: 'R@ck@tt@ck-123'
+  project: 'default'
+purestoragearray:
+  ipaddress: '172.16.100.10'
+  apitoken: 'e0835679-2827-7f95-b55f-e7793c7d8eed'

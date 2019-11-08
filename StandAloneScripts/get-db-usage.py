@@ -98,4 +98,3 @@ for db in dbs:
     )
     print(db_details)
     print(capacity_details)
-

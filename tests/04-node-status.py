@@ -79,7 +79,7 @@ test_data = test_data + output
 for i in range(len(response_yaml)):
     if response_yaml[i]['state'] != "active":
         if result < 1:
-            if response_yaml[i]['state'] == "in_maintenance":
+            if (response_yaml[i]['state'] == "in_maintenance") or (response_yaml[i]['state'] == "approved"):
                 result = 1
             else:
                 result = 3
