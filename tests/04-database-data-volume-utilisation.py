@@ -143,7 +143,7 @@ if result < 1:
             db.allocated_storage,
             textCol.END
         )
-        print("{}{}".format(db_details, capacity_details))
+        # print("{}{}".format(db_details, capacity_details))
         if int(result) < int(worstcase):
             result = worstcase
         test_data = "{}{}{}".format(test_data, db_details, capacity_details)
