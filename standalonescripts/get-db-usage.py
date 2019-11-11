@@ -6,20 +6,20 @@ import requests  # For symphony client
 import symphony_client  # For connecting to Symphony region
 import pytz  # To add timezone to datetime
 
-#get_ipython().system(u'{sys.executable} -m pip install pyyaml')
+# get_ipython().system(u'{sys.executable} -m pip install pyyaml')
 
 print(u"[INIT] Initialising script.")
 # Configure environment
-tz_utc = pytz.timezone("UTC") # Set timezone for data source
+tz_utc = pytz.timezone("UTC")  # Set timezone for data source
 rootpath = os.path.dirname(os.path.realpath('__file__'))  # Get the root path
 
 # Import config file data
 with open(rootpath + '/config.yml', 'r') as stream:
     try:
         config = yaml.safe_load(stream)
-        print(u" [\u2713] Config file loaded.")
+        print(u" [\u2713] Config file loaded.").encode('utf-8')
     except yaml.YAMLError as exc:
-        print(u" [\u2717] Could not load the config file.")
+        print(u" [\u2717] Could not load the config file.").encode('utf-8')
         print(exc)
         exit()
 
@@ -35,6 +35,7 @@ class textCol:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
+
 # Configure Stratoscale API connection
 symp_url = "https://" + config["region_access"]["ipaddress"]
 symp_domain = config["region_access"]["cloud_domain"]
@@ -46,10 +47,10 @@ my_session.verify = False
 
 try:
     client = symphony_client.Client(url=symp_url, session=my_session)
-    client_login = client.login(domain=symp_domain, username=symp_user, password=symp_password,project=symp_project)
-    print(u" [\u2713] Stratoscale user region [{}] session established.".format(symp_url))
+    client_login = client.login(domain=symp_domain, username=symp_user, password=symp_password, project=symp_project)
+    print(u" [\u2713] Stratoscale user region [{}] session established.".format(symp_url)).encode('utf-8')
 except:
-    print(u" [\u2717] Could not connect to the Stratosacle region [{}] as user".format(symp_url))
+    print(u" [\u2717] Could not connect to the Stratosacle region [{}] as user".format(symp_url)).encode('utf-8')
     exit()
 
 dbs = client.dbs.instance.list()
@@ -96,5 +97,5 @@ for db in dbs:
         db.allocated_storage,
         textCol.END
     )
-    print(db_details)
-    print(capacity_details)
+    print(db_details).encode('utf-8')
+    print(capacity_details).encode('utf-8')
