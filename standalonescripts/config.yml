@@ -1,9 +1,9 @@
 region_access:
-  ipaddress: '192.168.101.100'
-  cloud_domain: 'cloud_admin'
-  cloud_user: 'admin'
-  cloud_password: 'R@ck@tt@ck-123'
-  project: 'default'
+  ipaddress: 'IPADDR'
+  cloud_domain: 'DOMAIN'
+  cloud_user: 'USERNAME'
+  cloud_password: 'PASSWORD'
+  project: 'PROJECTNAME'
 purestoragearray:
-  ipaddress: '172.16.100.10'
-  apitoken: 'e0835679-2827-7f95-b55f-e7793c7d8eed'
+  ipaddress: 'IPADDR'
+  apitoken: 'APITOKEN'
