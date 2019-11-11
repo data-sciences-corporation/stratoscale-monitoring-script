@@ -18,9 +18,9 @@ framework:
     directory:
         report: 'reports'
         reportcount: '500'
-        script: 'scripts'
+        script: 'tests/scripts'
         test: 'tests'
-        working: 'working'
+        working: 'tests/working'
     errortypes:
         0: HEALTHY
         1: WARNING
