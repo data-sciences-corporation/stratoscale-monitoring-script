@@ -1,21 +1,13 @@
 General
-	- Add progress bar to reports. [DONE]
-	- Reduce zipped file directory depth
-	- make from address configurable [DONE]
-	- report time time zone implmentation [DONE]
-	- set monitor to run 1 minute after emails are sent  [1,6,11,16,21,26,31,36,41,46,51,56 * * * * monitor] [DONE]
-	- state change email [DONE]
-04-database-working.py
-	- Move DEBUG output into text file to be stored if issues are found. [DONE]
-	- Check if tests is for all VMs or just DBs [DONE] - ONLY DBs
+    -
 01-hardware.py
 	- Fix temprature reporting.
 	- Add other hardware tests.
 		CPU
 		Memory
 		Network
-04-stale-vm-report
-	- move list to file [DONE]
-	- INFO state [DONE]
 
-check UI is available
+TESTS:
+
+    - check UI is available - attempt to confirm if the UI is available or not
+    -
