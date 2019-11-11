@@ -8,6 +8,5 @@ General
 		Network
 
 TESTS:
-
     - check UI is available - attempt to confirm if the UI is available or not
     -

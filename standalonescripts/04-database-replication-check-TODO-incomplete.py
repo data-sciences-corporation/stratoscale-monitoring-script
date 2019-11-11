@@ -5,6 +5,8 @@
 
 
 import sys  # For running system level commands
+
+import pip
 import yaml  # For reading the config file
 import os  # For path tools
 import requests  # For symphony client
@@ -17,8 +19,7 @@ import pytz  # To add timezone to datetime
 
 # In[2]:
 
-
-get_ipython().system(u'{sys.executable} -m pip install pyyaml')
+#pip install pyyaml
 
 
 # In[3]:
@@ -120,42 +121,6 @@ for db in dbs:
             percent_used = "{}[No Data] - ?".format(textCol.YELLOW)
         print(db_details)
         print(db.role)
-
-
-# In[9]:
-
-
-print "MYSQL"
-db_data = client.dbs.instance.get("a5f089a9-e0f8-41aa-aba9-222e53005400")
-print db_data
-
-
-# In[7]:
-
-
-print "MYSQL-REPLICA"
-db_data = client.dbs.instance.get("d8ef60da-8042-4a73-84b2-59c1e51e6240")
-print db_data
-
-
-# In[10]:
-
-
-print "POSTGRES"
-db_data = client.dbs.instance.get("8d75b8e6-0a41-43b8-bb0a-787f81ed2537")
-print db_data
-
-
-# In[8]:
-
-
-print "POSTGRES-REPLICA"
-db_data = client.dbs.instance.get("6a7a4037-a401-4523-b558-3223ddb23980")
-print db_data
-
-
-# In[ ]:
-
 
 
 

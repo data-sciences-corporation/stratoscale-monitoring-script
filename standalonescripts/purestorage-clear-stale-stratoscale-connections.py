@@ -1,40 +1,21 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
-
-import sys  # For running system level commands
 import yaml  # For reading the config file
 import os  # For path tools
 import requests  # For symphony client
 import symphony_client  # For connecting to Symphony region
 import purestorage  # For running Pure Storage commands
-from pip._vendor.distlib.compat import raw_input
-import datetime
-from pytz import timezone
 import pytz  # To add timezone to datetime
 
-
-# In[2]:
-
-
-get_ipython().system(u'{sys.executable} -m pip install purestorage')
-get_ipython().system(u'{sys.executable} -m pip install pyyaml')
-
-
-# In[3]:
-
+#pip install purestorage
+#pip install pyyaml
 
 print(u"[INIT] Initialising script.")
 # Configure environment
 tz_utc = pytz.timezone("UTC") # Set timezone for data source
 current_day= ["ISO Week days start from 1","Mon","Tues","Wed","Thurs","Fri","Sat","Sun"]
 rootpath = os.path.dirname(os.path.realpath('__file__'))  # Get the root path
-
-
-# In[4]:
-
 
 # Import config file data
 with open(rootpath + '/config.yml', 'r') as stream:
@@ -45,10 +26,6 @@ with open(rootpath + '/config.yml', 'r') as stream:
         print(u" [\u2717] Could not load the config file.")
         print(exc)
         exit()
-
-
-# In[5]:
-
 
 # Configure Stratoscale API connection
 symp_url = "https://" + config["region_access"]["ipaddress"]
@@ -68,10 +45,6 @@ except:
     print(u" [\u2717] Could not connect to the Stratosacle region [{}] as user".format(symp_url))
     exit()
 
-
-# In[6]:
-
-
 #Configure Pure Storage API Connection
 pureip = str(config['purestoragearray']['ipaddress'])
 puretoken = str(config['purestoragearray']['apitoken'])
@@ -83,10 +56,6 @@ try:
 except:
     print(u" [\u2717] Could not connect to the Pure Storage array - IP [" + pureip + "]")
     exit()
-
-
-# In[7]:
-
 
 # Get hostname list
 the_hosts = []
@@ -101,7 +70,7 @@ strato_hosts = client.nodes.list()
 for strato_host in strato_hosts:
     for array_host in array_hosts:
         if strato_host.name in array_host.get("name"):
-            print " > found [{}]".format(strato_host.name)
+            print(" > found [{}]".format(strato_host.name))
             host_dict[u'stratoshortname'] = strato_host.name
             host_dict[u'stratolongname'] = strato_host.hostname
             host_dict[u'pure'] = array_host.get("name")
@@ -111,11 +80,7 @@ for strato_host in strato_hosts:
                 host_dict[u'vols'].append(hostvolume.get("vol"))
             the_hosts.append(dict(host_dict))
 
-
-# In[8]:
-
-
-print "Get which volumes are currently on which hosts."
+print("Get which volumes are currently on which hosts.")
 the_vols = []
 vol_dict = {
     u'vol_id' : "empty",
@@ -132,25 +97,17 @@ for strato_volume in strato_volumes:
     vol_dict[u'stratolongname'] = strato_volume_host
     the_vols.append(dict(vol_dict))
 
-
-# In[9]:
-
-
-print "Compare Stratoscale volume connections to pure volume connections, and remove incorrect connections."
+print("Compare Stratoscale volume connections to pure volume connections, and remove incorrect connections.")
 for vol in the_vols:
-    print " {} [{}]".format(vol.get("vol_id"),vol.get("stratolongname"))
+    print(" {} [{}]".format(vol.get("vol_id"),vol.get("stratolongname")))
     for host in the_hosts:
         if host.get("stratolongname") == vol.get("stratolongname"):
-            print "\tVolume should exist on this host [{}]".format(host.get("stratolongname"))
+            print("\tVolume should exist on this host [{}]".format(host.get("stratolongname")))
         else:
             if vol.get("vol_id") in host.get("vols"):
-                print "\tDisconnecting volume from {}".format(host.get("stratolongname"))
-                print "\t\t> {}\n\t\t> {}".format(host.get("pure"),vol.get("vol_id"))
+                print("\tDisconnecting volume from {}".format(host.get("stratolongname")))
+                print("\t\t> {}\n\t\t> {}".format(host.get("pure"),vol.get("vol_id")))
                 array.disconnect_host(host.get("pure"),vol.get("vol_id"))
-
-
-# In[10]:
-
 
 # Disconnect sessions
 array.invalidate_cookie()
