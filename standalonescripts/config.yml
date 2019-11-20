@@ -1,9 +1,22 @@
 region_access:
-  ipaddress: 'IPADDR'
-  cloud_domain: 'DOMAIN'
-  cloud_user: 'USERNAME'
-  cloud_password: 'PASSWORD'
-  project: 'PROJECTNAME'
+  ipaddress: 'REGION IP ADDRESS'
+  cloud_domain: 'USER TENANT/DOMAIN'
+  cloud_user: 'USER NAME'
+  cloud_password: 'USER PASSWORD'
+  cloud_admin_password: 'CLOUD ADMIN PASSWORD'
+  project: 'USER PROJECT'
 purestoragearray:
-  ipaddress: 'IPADDR'
-  apitoken: 'APITOKEN'
+  ipaddress: 'PURE STORAGE IP ADDRESS'
+  apitoken: 'PURE STORAGE API TOKEN'
+region_access_replicasite:
+  ipaddress: 'REGION IP ADDRESS - REPLICA SITE'
+  cloud_domain: 'USER TENANT/DOMAIN - REPLICA SITE'
+  cloud_user: 'USER NAME - REPLICA SITE'
+  cloud_password: 'USER PASSWORD - REPLICA SITE'
+  cloud_admin_password: 'CLOUD ADMIN PASSWORD - REPLICA SITE'
+  project: 'USER PROJECT - REPLICA SITE'
+purestoragearray_replicasite:
+  ipaddress: 'PURE STORAGE IP ADDRESS - REPLICA SITE'
+  apitoken: 'PURE STORAGE API TOKEN - REPLICA SITE'
+settings:
+   historical_records: '4'
