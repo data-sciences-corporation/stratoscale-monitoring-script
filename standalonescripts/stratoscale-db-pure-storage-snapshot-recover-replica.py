@@ -63,7 +63,6 @@ except:
 # In[6]:
 
 
-print(u"[>] SOURCE DB").encode('utf-8') 
 # Configure Stratoscale API connection (Source Region)
 symp_url = "https://" + config["region_access"]["ipaddress"]
 symp_domain = config["region_access"]["cloud_domain"]
@@ -80,17 +79,17 @@ my_admin_session.verify = False
 try:
     client = symphony_client.Client(url=symp_url, session=my_session)
     client_login = client.login(domain=symp_domain, username=symp_user, password=symp_password,project=symp_project)
-    print(u" [\u2713] Stratoscale user region [{}] session established.".format(symp_url)).encode('utf-8')
+    print(u" [\u2713] Stratoscale user source region [{}] session established.".format(symp_url)).encode('utf-8')
 except:
-    print(u" [\u2717] Could not connect to the Stratosacle region [{}] as user".format(symp_url)).encode('utf-8')
+    print(u" [\u2717] Could not connect to the Stratosacle source region [{}] as user".format(symp_url)).encode('utf-8')
     exit()
 
 try:
     client_admin = symphony_client.Client(url=symp_url, session=my_admin_session)
     client_admin_login = client_admin.login(domain="cloud_admin", username="admin", password=symp_cloud_admin_password,project="default")
-    print(u" [\u2713] Stratoscale cloud admin region [{}] session established.".format(symp_url)).encode('utf-8')
+    print(u" [\u2713] Stratoscale cloud admin source region [{}] session established.".format(symp_url)).encode('utf-8')
 except:
-    print(u" [\u2717] Could not connect to the Stratosacle region [{}] as cloud admin".format(symp_url)).encode('utf-8')
+    print(u" [\u2717] Could not connect to the Stratosacle source region [{}] as cloud admin".format(symp_url)).encode('utf-8')
     exit()
 
 
@@ -98,7 +97,7 @@ except:
 
 
 # Collect SOURCE DB data
-print(u"[SOURCE DB] Collecting information from original DB [{}].".format(dbs_id)).encode('utf-8')
+print(u"[SOURCE DB] Collecting metadata from original DB [{}].".format(dbs_id)).encode('utf-8')
 database=client.dbs.instance.get(dbs_id)
 # Environmentals
 dbs_vpc_id = client.vpcs.list()[0].get("id")
@@ -150,7 +149,6 @@ client_admin.logout()
 # In[9]:
 
 
-print(u"[>] REPLICA DB").encode('utf-8') 
 # Configure Stratoscale API connection (Source Region)
 symp_url = "https://" + config["region_access_replicasite"]["ipaddress"]
 symp_domain = config["region_access_replicasite"]["cloud_domain"]
@@ -167,17 +165,17 @@ my_admin_session.verify = False
 try:
     client = symphony_client.Client(url=symp_url, session=my_session)
     client_login = client.login(domain=symp_domain, username=symp_user, password=symp_password,project=symp_project)
-    print(u" [\u2713] Stratoscale user region [{}] session established.".format(symp_url)).encode('utf-8')
+    print(u" [\u2713] Stratoscale user replica region [{}] session established.".format(symp_url)).encode('utf-8')
 except:
-    print(u" [\u2717] Could not connect to the Stratosacle region [{}] as user".format(symp_url)).encode('utf-8')
+    print(u" [\u2717] Could not connect to the Stratosacle replica region [{}] as user".format(symp_url)).encode('utf-8')
     exit()
 
 try:
     client_admin = symphony_client.Client(url=symp_url, session=my_admin_session)
     client_admin_login = client_admin.login(domain="cloud_admin", username="admin", password=symp_cloud_admin_password,project="default")
-    print(u" [\u2713] Stratoscale cloud admin region [{}] session established.".format(symp_url)).encode('utf-8')
+    print(u" [\u2713] Stratoscale cloud admin replica region [{}] session established.".format(symp_url)).encode('utf-8')
 except:
-    print(u" [\u2717] Could not connect to the Stratosacle region [{}] as cloud admin".format(symp_url)).encode('utf-8')
+    print(u" [\u2717] Could not connect to the Stratosacle replica region [{}] as cloud admin".format(symp_url)).encode('utf-8')
     exit()
 
 
@@ -185,12 +183,12 @@ except:
 
 
 # Configuring parameters for new DB
-print("[NEW DB DEPLOYMENT] Finalizing new DB.").encode('utf-8')
 print(u" [\u2713] A new DB called [{}] will be created from data in the DB [{}].".format(
     dbs_name_replica,
     dbs_original_name
 )).encode('utf-8')
-answer = raw_input(" [>] Please type \"confirm\" to create the DB: ").lower()
+print(u"[CONFIRMATION] A new remote replica DB called [{}] will be created for DB [{}].").encode('utf-8')
+answer = raw_input(" [>] Please type \"confirm\" to create the remote replica: ").lower()
 if answer != "confirm":
     print(u" [\u2717] Process Cancelled - Nothing will be done.").encode('utf-8')
     exit()
@@ -216,23 +214,28 @@ except:
 
 
 # Generating the data volume and import to Stratoscale
-volumename = "tempvolume-delete"
+volumename = "replicarecoveryvolumetemp"
 try: 
     array.destroy_volume(volumename)
+except:
+    print(u" [?] Attempted a destroy of the old volume. Not needed.").encode('utf-8')
+try: 
     array.eradicate_volume(volumename)
 except:
-    print(u" [?] Attempted a clean of old volume. Not needed.").encode('utf-8')
-    
+    print(u" [?] Attempted an eradicate of the old volume. Not needed.").encode('utf-8')
 try:
-    snapshots = array.get_volume("volume-" + db_vm_data_vol_id + "-cinder", snap="True")
-    response = array.copy_volume(snapshots[0].get("name"), volumename)
+    # Go through the snapshot list (find all relevant volumes and store latest one)
+    for snapshot in array.list_volumes(snap="True"):
+        if db_vm_data_vol_id in snapshot.get("name"):
+            sourcevol = snapshot.get("name")
+    response = array.copy_volume(sourcevol, volumename)
     print(u" [\u2713] Creating a volume from selected recovery point (snapshot) on the Pure Storage Array. NAME [{}]".format(volumename)).encode('utf-8')
 except:
     print(u" [\u2717] Could not create a volume on the Pure Storage Array. Please try again.").encode('utf-8')
     exit()
 
 
-# In[13]:
+# In[14]:
 
 
 # Import volume for use in Stratoscale
@@ -255,7 +258,7 @@ except:
     exit()
 
 
-# In[14]:
+# In[15]:
 
 
 # Collect Replica DB data
@@ -291,10 +294,11 @@ print(u" [\u2713] Master DB access port\t\t> {}".format(db_access_port)).encode(
 ### MVP2 - COPARE PARAMETER GROUPS THAT ARE SELECTED
 
 
-# In[15]:
+# In[16]:
 
 
 # Build up bash query (creating replica does not exist in this build)
+print(u"[CREATE REPLICA] Launching the remote replica DB [{}].".format(dbs_name_replica)).encode('utf-8')
 cli_string = "symp -k -d \'{}\' -u \'{}\' -r \'{}\' -p \'{}\' dbs instance create \'{}\' \'{}\' \'{}\' \'{}\' \'{}\' \'{}\' \'{}\' --volume-id \'{}\' --param-group-id \'{}\' --replication-host \'{}\' --replication-port \'{}\' --is-external".format(
     symp_domain,
     symp_user,
@@ -312,10 +316,10 @@ cli_string = "symp -k -d \'{}\' -u \'{}\' -r \'{}\' -p \'{}\' dbs instance creat
     db_elastic_ip_address,
     db_access_port
 )
-print u"[>] {} STRING TO RUN: ".format(cli_string)
+print u"[>] STRING TO RUN: {}".format(cli_string)
 
 
-# In[16]:
+# In[17]:
 
 
 print(u"[>] Attempting DB creation.").encode('utf-8')
@@ -325,7 +329,7 @@ except:
     print(u" [\u2717] Could not run the shell request.").encode('utf-8')
 
 
-# In[17]:
+# In[18]:
 
 
 # Disconnect sessions
@@ -333,9 +337,10 @@ array.invalidate_cookie()
 # Disconnect source region, connect to replication region
 client.logout()
 client_admin.logout()
+print(u" [\u2713] Storage based remote replica creation process complete.\nProgam will now exit.").encode('utf-8')
 
 
-# In[18]:
+# In[19]:
 
 
 #dbs instance create 
