@@ -291,7 +291,7 @@ print(u" [\u2713] Master DB access IP\t\t> {}".format(db_elastic_ip_address)).en
 print(u" [\u2713] Master DB access port\t\t> {}".format(db_access_port)).encode('utf-8')
      
 ### MVP2 - ASK FOR CUSTOM IP ADDRESS MVP2
-### MVP2 - COPARE PARAMETER GROUPS THAT ARE SELECTED
+### MVP2 - COMPARE PARAMETER GROUPS THAT ARE SELECTED
 
 
 # In[16]:
